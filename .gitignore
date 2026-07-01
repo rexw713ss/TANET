@@ -1,0 +1,37 @@
+# Python virtual environment
+env/
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# Local agent/tooling state
+.agents/
+.codex/
+
+# External datasets and cloned upstream repositories
+/BIPIA/
+/datasets/
+newsqa-data-v1.csv
+*.parquet
+
+# Research drafts / binary documents kept local unless explicitly requested
+*.docx
+*.pdf
+
+# Generated benchmark data and experiment outputs
+rag-ipi-defense/data/bipia/*.jsonl
+rag-ipi-defense/data/eval_samples/*.jsonl
+rag-ipi-defense/data/jailbreakbench/*.jsonl
+rag-ipi-defense/results/
+
+# Python caches inside project
+rag-ipi-defense/**/__pycache__/
