@@ -1,0 +1,64 @@
+{
+  "data": "D:\\TANET\\rag-ipi-defense\\data\\splits\\validation.jsonl",
+  "rows": 380,
+  "label_counts": {
+    "malicious": 285,
+    "benign": 95
+  },
+  "selection_policy": {
+    "sealed_test": "No official BIPIA test row is used.",
+    "target_malicious_pass_rate": "<= 0.05 when feasible",
+    "target_benign_auto_block_rate": "<= 0.01 when feasible",
+    "objective": "8*malicious_pass + 12*benign_auto_block + 0.25*review_rate"
+  },
+  "embedding": {
+    "model_id": "intfloat/multilingual-e5-small",
+    "revision": "fd1525a9fd15316a2d503bf26ab031a61d056e98",
+    "onnx_filename": "onnx/model.onnx",
+    "max_length": 512,
+    "max_chunk_chars": 1400,
+    "cache_path": "D:\\TANET\\rag-ipi-defense\\data\\cache\\embedding.sqlite3",
+    "method": "multilingual_e5_max_chunk_cosine_distance",
+    "model_key": "intfloat/multilingual-e5-small@fd1525a9fd15316a2d503bf26ab031a61d056e98:onnx/model.onnx:max512"
+  },
+  "selected": {
+    "weights": {
+      "alpha": 0.6,
+      "beta": 0.4,
+      "gamma": 0.0
+    },
+    "thresholds": {
+      "tau_low": 0.05,
+      "tau_high": 0.2
+    },
+    "metrics": {
+      "malicious_pass_rate": 0.0,
+      "benign_auto_block_rate": 0.0,
+      "review_rate": 0.7131578947368421,
+      "auto_block_malicious_rate": 0.37894736842105264,
+      "gate_precision_at_tau_low": 0.7519788918205804,
+      "gate_recall_at_tau_low": 1.0,
+      "gate_f1_at_tau_low": 0.858433734939759,
+      "auprc_average_precision": 0.8851472823868145
+    },
+    "objective": 0.17828947368421053,
+    "srs_only": {
+      "threshold": 0.2,
+      "precision": 1.0,
+      "recall": 0.37894736842105264,
+      "f1": 0.549618320610687,
+      "false_positive_rate": 0.0
+    },
+    "candidates_evaluated": 56826
+  },
+  "srs_config": {
+    "alpha": 0.6,
+    "beta": 0.4,
+    "gamma": 0.0,
+    "tau_low": 0.05,
+    "tau_high": 0.2,
+    "instruction_saturation_hits": 2.0,
+    "pressure_saturation_hits": 2.0,
+    "intent_method": "multilingual_e5_max_chunk_cosine_distance"
+  }
+}

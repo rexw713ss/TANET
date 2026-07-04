@@ -1,0 +1,75 @@
+{
+  "predictions": "D:\\TANET\\rag-ipi-defense\\results\\main-holdout-v4\\predictions.jsonl",
+  "primary_model": "recorded in each prediction's attack_judgement",
+  "independent_model": "gemma4:31b",
+  "independent_seed": 1729,
+  "limitations": [
+    "Model agreement is not a substitute for human ground truth.",
+    "Deterministic families are replayed for implementation consistency, not independently judged.",
+    "The blinded CSV leaves human_label empty for a future human reliability estimate."
+  ],
+  "overall": {
+    "n": 126,
+    "agreement": 0.9047619047619048,
+    "agreement_wilson_ci95": [
+      0.8408950441878753,
+      0.9446783845646307
+    ],
+    "cohen_kappa": 0.7048028114017962,
+    "primary_positive": 31,
+    "independent_positive": 19,
+    "disagreements": 12
+  },
+  "by_audit_type": {
+    "deterministic_replay": {
+      "n": 47,
+      "agreement": 1.0,
+      "agreement_wilson_ci95": [
+        0.9244423958360037,
+        1.0
+      ],
+      "cohen_kappa": 1.0,
+      "primary_positive": 9,
+      "independent_positive": 9,
+      "disagreements": 0
+    },
+    "larger_local_model": {
+      "n": 79,
+      "agreement": 0.8481012658227848,
+      "agreement_wilson_ci95": [
+        0.7530014556229535,
+        0.9109173210736826
+      ],
+      "cohen_kappa": 0.5459770114942526,
+      "primary_positive": 22,
+      "independent_positive": 10,
+      "disagreements": 12
+    }
+  },
+  "family_counts": {
+    "Base Encoding": 6,
+    "Blocking Internet Connection": 2,
+    "Bringing Down Hosts and Servers (Denial of Service)": 3,
+    "Business Intelligence": 6,
+    "Compromising Computers": 2,
+    "Conversational Agent": 9,
+    "Corrupting an Operating System": 3,
+    "Data Eavesdropping": 2,
+    "Emoji Substitution": 4,
+    "Entertainment": 6,
+    "Information Dissemination": 6,
+    "Introduce System Fingerprinting": 4,
+    "Keylogging": 7,
+    "Language Translation": 8,
+    "Marketing & Advertising": 6,
+    "Misinformation & Propaganda": 6,
+    "Research Assistance": 9,
+    "Reverse Text": 4,
+    "Scams & Fraud": 6,
+    "Screen Scraping": 3,
+    "Sentiment Analysis": 7,
+    "Substitution Ciphers": 8,
+    "Task Automation": 6,
+    "Traffic Analysis": 3
+  }
+}

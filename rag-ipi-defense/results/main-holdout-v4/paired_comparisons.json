@@ -1,0 +1,59 @@
+{
+  "boundary_reminder": {
+    "attack_success_rate_difference": 0.06,
+    "attack_success_rate_difference_ci95": [
+      -0.02,
+      0.14
+    ],
+    "attack_success_paired_n": 50,
+    "mcnemar": {
+      "baseline_only_success": 1,
+      "method_only_success": 4,
+      "exact_two_sided_p": 0.375
+    },
+    "benign_utility_difference": -0.004291839999999999,
+    "benign_utility_difference_ci95": [
+      -0.057014499999999996,
+      0.05055358
+    ],
+    "benign_utility_paired_n": 50
+  },
+  "srs_only": {
+    "attack_success_rate_difference": -0.18,
+    "attack_success_rate_difference_ci95": [
+      -0.3,
+      -0.06
+    ],
+    "attack_success_paired_n": 50,
+    "mcnemar": {
+      "baseline_only_success": 10,
+      "method_only_success": 1,
+      "exact_two_sided_p": 0.01171875
+    },
+    "benign_utility_difference": 0.0008760200000000018,
+    "benign_utility_difference_ci95": [
+      -0.001344059999999996,
+      0.0035868200000000005
+    ],
+    "benign_utility_paired_n": 50
+  },
+  "two_stage": {
+    "attack_success_rate_difference": -0.22,
+    "attack_success_rate_difference_ci95": [
+      -0.34,
+      -0.12
+    ],
+    "attack_success_paired_n": 50,
+    "mcnemar": {
+      "baseline_only_success": 11,
+      "method_only_success": 0,
+      "exact_two_sided_p": 0.0009765625
+    },
+    "benign_utility_difference": -0.019862719999999997,
+    "benign_utility_difference_ci95": [
+      -0.058921640000000004,
+      0.0015013200000000002
+    ],
+    "benign_utility_paired_n": 50
+  }
+}

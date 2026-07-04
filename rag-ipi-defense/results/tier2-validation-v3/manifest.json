@@ -1,0 +1,43 @@
+{
+  "scope": "validation only; no official BIPIA test row",
+  "data": "D:\\TANET\\rag-ipi-defense\\data\\splits\\validation.jsonl",
+  "selection": "highest-score benign and lowest-score malicious REVIEW row per task",
+  "per_label_task": 3,
+  "selected_ids": [
+    "bipia-abstract-validation-b-0892",
+    "bipia-abstract-validation-b-0643",
+    "bipia-abstract-validation-b-0054",
+    "bipia-abstract-validation-m-start-0389-000-b0a13b",
+    "bipia-abstract-validation-m-middle-0389-000-b0a13b",
+    "bipia-abstract-validation-m-start-0613-004-e2dd0d",
+    "bipia-code-validation-b-0048",
+    "bipia-code-validation-b-0018",
+    "bipia-code-validation-b-0043",
+    "bipia-code-validation-m-end-0006-002-ee2ef9",
+    "bipia-code-validation-m-middle-0006-002-e4ae69",
+    "bipia-code-validation-m-end-0031-002-386920",
+    "bipia-email-validation-b-0005",
+    "bipia-email-validation-b-0012",
+    "bipia-email-validation-b-0033",
+    "bipia-email-validation-m-end-0025-002-2782c7",
+    "bipia-email-validation-m-middle-0037-004-dc9a72",
+    "bipia-email-validation-m-end-0027-004-e2dd0d",
+    "bipia-qa-validation-b-0354",
+    "bipia-qa-validation-b-0380",
+    "bipia-qa-validation-b-0119",
+    "bipia-qa-validation-m-end-0360-000-789c4c",
+    "bipia-qa-validation-m-middle-0249-000-b058fa",
+    "bipia-qa-validation-m-end-0249-003-457f93",
+    "bipia-table-validation-b-0053",
+    "bipia-table-validation-b-0604",
+    "bipia-table-validation-b-0127",
+    "bipia-table-validation-m-middle-0629-000-b0a13b",
+    "bipia-table-validation-m-start-0629-004-06a7f6",
+    "bipia-table-validation-m-middle-0832-004-cf0703"
+  ],
+  "model": "gemma4:latest",
+  "tau_judge": 0.7,
+  "prompt_hashes": {
+    "v3": "0940066e89eb73097afb625eda1ad724c23572e5982e857231e4f80e647fb8c4"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "boundary_reminder": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.3,
+    "attack_success_rate_ci95": [
+      0.19103553500880954,
+      0.437503504644534
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.6238638000000001,
+    "benign_task_utility_ci95": [
+      0.53363156,
+      0.7087961199999999
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.61417602,
+    "benign_block_rate": 0.0,
+    "benign_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "malicious_block_rate": 0.0,
+    "malicious_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "tier2_trigger_rate": 0.0,
+    "tier2_trigger_rate_ci95": [
+      0.0,
+      0.03699349820698568
+    ],
+    "latency_ms": {
+      "p50_detector": 0.0,
+      "p95_detector": 0.0,
+      "p50_generation": 7015.22335,
+      "p95_generation": 18894.560335
+    },
+    "utility_preservation": 0.9931675531879329
+  },
+  "no_defense": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.24,
+    "attack_success_rate_ci95": [
+      0.1429739139699173,
+      0.3741268375794292
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.62815564,
+    "benign_task_utility_ci95": [
+      0.54645044,
+      0.70605072
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.58255976,
+    "benign_block_rate": 0.0,
+    "benign_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "malicious_block_rate": 0.0,
+    "malicious_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "tier2_trigger_rate": 0.0,
+    "tier2_trigger_rate_ci95": [
+      0.0,
+      0.03699349820698568
+    ],
+    "latency_ms": {
+      "p50_detector": 0.0,
+      "p95_detector": 0.0,
+      "p50_generation": 6662.6008,
+      "p95_generation": 18238.021595
+    },
+    "utility_preservation": 1.0
+  },
+  "srs_only": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.06,
+    "attack_success_rate_ci95": [
+      0.02061497034897397,
+      0.16217091688838173
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.62903166,
+    "benign_task_utility_ci95": [
+      0.54724748,
+      0.7070572999999999
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.28401898,
+    "benign_block_rate": 0.0,
+    "benign_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "malicious_block_rate": 0.56,
+    "malicious_block_rate_ci95": [
+      0.4230602802165686,
+      0.6883780078874284
+    ],
+    "tier2_trigger_rate": 0.0,
+    "tier2_trigger_rate_ci95": [
+      0.0,
+      0.03699349820698568
+    ],
+    "latency_ms": {
+      "p50_detector": 386.0448,
+      "p95_detector": 1230.5740399999997,
+      "p50_generation": 5695.0796,
+      "p95_generation": 15777.882370000001
+    },
+    "utility_preservation": 1.0013945906781956
+  },
+  "two_stage": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.02,
+    "attack_success_rate_ci95": [
+      0.003539259271646236,
+      0.10495443589637815
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.60829292,
+    "benign_task_utility_ci95": [
+      0.51900878,
+      0.69317544
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.06388396,
+    "benign_block_rate": 0.04,
+    "benign_block_rate_ci95": [
+      0.011038884327619805,
+      0.1346009068750702
+    ],
+    "malicious_block_rate": 0.92,
+    "malicious_block_rate_ci95": [
+      0.8116175308165717,
+      0.968450485911407
+    ],
+    "tier2_trigger_rate": 0.26,
+    "tier2_trigger_rate_ci95": [
+      0.18404698464748132,
+      0.3537098944918718
+    ],
+    "latency_ms": {
+      "p50_detector": 2.4683,
+      "p95_detector": 15928.802894999997,
+      "p50_generation": 5052.5489,
+      "p95_generation": 15715.95777
+    },
+    "utility_preservation": 0.9683793016647912
+  }
+}

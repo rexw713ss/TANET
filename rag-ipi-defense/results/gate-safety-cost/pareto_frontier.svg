@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="480" viewBox="0 0 760 480">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="65" y1="415" x2="695" y2="415" stroke="black"/>
+<line x1="65" y1="65" x2="65" y2="415" stroke="black"/>
+<polyline points="65.00,415.00 71.63,415.00 79.92,415.00 91.53,415.00 116.39,415.00 132.97,415.00 171.11,415.00 239.08,415.00 267.26,415.00 303.74,415.00 326.95,413.77 340.21,415.00 346.84,410.09 356.79,410.09 358.45,410.09 363.42,413.77 376.68,415.00 383.32,413.77 386.63,413.77 388.29,413.77 396.58,415.00 399.89,415.00 401.55,415.00" fill="none" stroke="#1769aa" stroke-width="2"/>
+<g fill="#d1495b"><circle cx="65.00" cy="415.00" r="3" />
+<circle cx="71.63" cy="415.00" r="3" />
+<circle cx="79.92" cy="415.00" r="3" />
+<circle cx="91.53" cy="415.00" r="3" />
+<circle cx="116.39" cy="415.00" r="3" />
+<circle cx="132.97" cy="415.00" r="3" />
+<circle cx="171.11" cy="415.00" r="3" />
+<circle cx="239.08" cy="415.00" r="3" />
+<circle cx="267.26" cy="415.00" r="3" />
+<circle cx="303.74" cy="415.00" r="3" />
+<circle cx="326.95" cy="413.77" r="3" />
+<circle cx="340.21" cy="415.00" r="3" />
+<circle cx="346.84" cy="410.09" r="3" />
+<circle cx="356.79" cy="410.09" r="3" />
+<circle cx="358.45" cy="410.09" r="3" />
+<circle cx="363.42" cy="413.77" r="3" />
+<circle cx="376.68" cy="415.00" r="3" />
+<circle cx="383.32" cy="413.77" r="3" />
+<circle cx="386.63" cy="413.77" r="3" />
+<circle cx="388.29" cy="413.77" r="3" />
+<circle cx="396.58" cy="415.00" r="3" />
+<circle cx="399.89" cy="415.00" r="3" />
+<circle cx="401.55" cy="415.00" r="3" /></g>
+<text x="380.0" y="465" text-anchor="middle" font-family="sans-serif">Tier-2 review rate (cost)</text>
+<text x="18" y="240.0" text-anchor="middle" transform="rotate(-90 18 240.0)" font-family="sans-serif">Estimated malicious pass rate (risk)</text>
+<text x="380.0" y="30" text-anchor="middle" font-family="sans-serif" font-size="18">Validation-only Gate safety–cost Pareto frontier</text>
+</svg>

@@ -1,0 +1,5 @@
+﻿method,n,attack_success_rate,benign_task_utility,malicious_task_utility,utility_preservation,benign_block_rate,malicious_block_rate,tier2_trigger_rate
+boundary_reminder,100,0.3,0.6238638000000001,0.61417602,0.9931675531879329,0.0,0.0,0.0
+no_defense,100,0.24,0.62815564,0.58255976,1.0,0.0,0.0,0.0
+srs_only,100,0.06,0.62903166,0.28401898,1.0013945906781956,0.0,0.56,0.0
+two_stage,100,0.02,0.60829292,0.06388396,0.9683793016647912,0.04,0.92,0.26

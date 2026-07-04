@@ -1,0 +1,27 @@
+{
+  "scope": "BIPIA validation only",
+  "policy": "BLOCK score>tau_high; REVIEW directive_candidate or score>=tau_low; otherwise PASS",
+  "constraints": {
+    "max_malicious_pass_rate": 0.02,
+    "max_benign_auto_block_rate": 0.01
+  },
+  "weights": {
+    "alpha": 0.6,
+    "beta": 0.4,
+    "gamma": 0.0
+  },
+  "selected": {
+    "tau_low": 0.185,
+    "tau_high": 0.185,
+    "malicious_pass_rate": 0.014035087719298246,
+    "benign_auto_block_rate": 0.0,
+    "review_rate": 0.46578947368421053,
+    "block_rate": 0.28421052631578947,
+    "feasible": true
+  },
+  "candidate_signal": {
+    "benign_rate": 0.042105263157894736,
+    "malicious_rate": 0.9859649122807017
+  },
+  "rows": 380
+}
