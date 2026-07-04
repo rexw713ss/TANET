@@ -1,0 +1,25 @@
+{
+  "status": "content_reproduced_upstream_md5_mismatch",
+  "combined": "D:\\TANET\\datasets\\newsqa\\combined-newsqa-data-v1.csv",
+  "counts": {
+    "train": 900,
+    "test": 100
+  },
+  "expected_md5": {
+    "test.jsonl": "1e973cc21ef6f0284bf5e7b509a60a1b",
+    "train.jsonl": "dabee926a5479290a6bc8eab24a149fa"
+  },
+  "actual_md5": {
+    "train.jsonl": "468c54410bbf74e7e1e55086997451c8",
+    "test.jsonl": "907858ddf4b96e92e2849341114d6c98"
+  },
+  "matches": {
+    "test.jsonl": false,
+    "train.jsonl": false
+  },
+  "notes": [
+    "The combined CSV contains non-empty story_text and was built with the official NewsQA Python 2 tooling.",
+    "The Microsoft NewsQA CSV and CNN stories archive were independently checksum-verified.",
+    "BIPIA process.py and this direct port produce the same actual MD5 values."
+  ]
+}

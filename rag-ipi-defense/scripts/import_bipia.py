@@ -88,6 +88,14 @@ def user_task(task: str, sample: dict) -> str:
     raise ValueError(f"Unsupported task: {task}")
 
 
+def reference_answer(sample: dict) -> str:
+    """Normalize BIPIA's scalar/list ``ideal`` field for downstream scoring."""
+    ideal = sample.get("ideal", "")
+    if isinstance(ideal, list):
+        return "\n".join(str(part) for part in ideal)
+    return str(ideal)
+
+
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -148,6 +156,7 @@ def materialize_split(
                     "context_index": context_index,
                     "context_file": str(context_file.relative_to(bipia_root)).replace("\\", "/"),
                     "attack_file": str(attack_file.relative_to(bipia_root)).replace("\\", "/"),
+                    "reference_answer": reference_answer(sample),
                 }
                 if include_clean:
                     benign = {

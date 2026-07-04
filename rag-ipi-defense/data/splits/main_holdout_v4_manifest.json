@@ -1,0 +1,581 @@
+{
+  "created_at_utc": "2026-07-04T05:20:02.610343+00:00",
+  "status": "locked before inference",
+  "seed": 20260705,
+  "pool": "D:\\TANET\\rag-ipi-defense\\data\\splits\\test_sample.jsonl",
+  "consumed_predictions": [
+    "D:\\TANET\\rag-ipi-defense\\results\\downstream-stratified-smoke\\predictions.jsonl",
+    "D:\\TANET\\rag-ipi-defense\\results\\downstream-holdout-v2\\predictions.jsonl",
+    "D:\\TANET\\rag-ipi-defense\\results\\downstream-holdout-v3\\predictions.jsonl"
+  ],
+  "contexts_per_task": 10,
+  "policy": [
+    "Exclude the entire task/context_index group if any row was used in the prior pilot.",
+    "Select the requested number of untouched context groups per task by seeded SHA-256 rank.",
+    "Select one benign and one malicious row from the same context.",
+    "Greedily balance malicious attack family and insertion position; seeded SHA-256 breaks ties.",
+    "Exclude unknown-reference benign rows so utility has a meaningful reference."
+  ],
+  "consumed_ids": [
+    "bipia-abstract-test-b-0042",
+    "bipia-abstract-test-b-0081",
+    "bipia-abstract-test-b-0086",
+    "bipia-abstract-test-b-0088",
+    "bipia-abstract-test-b-0093",
+    "bipia-abstract-test-m-end-0081-003-fcc847",
+    "bipia-abstract-test-m-end-0086-001-dfa508",
+    "bipia-abstract-test-m-middle-0093-002-6c1bd5",
+    "bipia-abstract-test-m-start-0042-002-d74cb6",
+    "bipia-abstract-test-m-start-0088-004-18ec6e",
+    "bipia-code-test-b-0005",
+    "bipia-code-test-b-0011",
+    "bipia-code-test-b-0016",
+    "bipia-code-test-b-0017",
+    "bipia-code-test-b-0030",
+    "bipia-code-test-m-end-0011-001-5f9860",
+    "bipia-code-test-m-end-0016-000-e52bc8",
+    "bipia-code-test-m-end-0030-001-4e2f3c",
+    "bipia-code-test-m-middle-0017-000-a216c0",
+    "bipia-code-test-m-start-0005-002-6f73b6",
+    "bipia-email-test-b-0005",
+    "bipia-email-test-b-0016",
+    "bipia-email-test-b-0018",
+    "bipia-email-test-b-0028",
+    "bipia-email-test-b-0039",
+    "bipia-email-test-m-middle-0005-003-fb536e",
+    "bipia-email-test-m-middle-0018-001-f2a170",
+    "bipia-email-test-m-middle-0028-001-22eb34",
+    "bipia-email-test-m-middle-0039-000-ab1ce4",
+    "bipia-email-test-m-start-0016-004-13e1bc",
+    "bipia-table-test-b-0079",
+    "bipia-table-test-b-0082",
+    "bipia-table-test-b-0091",
+    "bipia-table-test-b-0097",
+    "bipia-table-test-b-0099",
+    "bipia-table-test-m-middle-0079-003-bfd311",
+    "bipia-table-test-m-start-0082-003-519ade",
+    "bipia-table-test-m-start-0091-001-e3d9e5",
+    "bipia-table-test-m-start-0097-004-a30203",
+    "bipia-table-test-m-start-0099-002-d74cb6"
+  ],
+  "excluded_context_groups": [
+    {
+      "task": "abstract",
+      "context_index": 42
+    },
+    {
+      "task": "abstract",
+      "context_index": 81
+    },
+    {
+      "task": "abstract",
+      "context_index": 86
+    },
+    {
+      "task": "abstract",
+      "context_index": 88
+    },
+    {
+      "task": "abstract",
+      "context_index": 93
+    },
+    {
+      "task": "code",
+      "context_index": 5
+    },
+    {
+      "task": "code",
+      "context_index": 11
+    },
+    {
+      "task": "code",
+      "context_index": 16
+    },
+    {
+      "task": "code",
+      "context_index": 17
+    },
+    {
+      "task": "code",
+      "context_index": 30
+    },
+    {
+      "task": "email",
+      "context_index": 5
+    },
+    {
+      "task": "email",
+      "context_index": 16
+    },
+    {
+      "task": "email",
+      "context_index": 18
+    },
+    {
+      "task": "email",
+      "context_index": 28
+    },
+    {
+      "task": "email",
+      "context_index": 39
+    },
+    {
+      "task": "table",
+      "context_index": 79
+    },
+    {
+      "task": "table",
+      "context_index": 82
+    },
+    {
+      "task": "table",
+      "context_index": 91
+    },
+    {
+      "task": "table",
+      "context_index": 97
+    },
+    {
+      "task": "table",
+      "context_index": 99
+    }
+  ],
+  "selected_context_groups": [
+    {
+      "task": "abstract",
+      "context_index": 24,
+      "attack_family": "Marketing & Advertising",
+      "position": "middle"
+    },
+    {
+      "task": "abstract",
+      "context_index": 48,
+      "attack_family": "Language Translation",
+      "position": "start"
+    },
+    {
+      "task": "abstract",
+      "context_index": 65,
+      "attack_family": "Scams & Fraud",
+      "position": "end"
+    },
+    {
+      "task": "abstract",
+      "context_index": 21,
+      "attack_family": "Task Automation",
+      "position": "start"
+    },
+    {
+      "task": "abstract",
+      "context_index": 19,
+      "attack_family": "Information Dissemination",
+      "position": "middle"
+    },
+    {
+      "task": "abstract",
+      "context_index": 50,
+      "attack_family": "Base Encoding",
+      "position": "end"
+    },
+    {
+      "task": "abstract",
+      "context_index": 70,
+      "attack_family": "Sentiment Analysis",
+      "position": "end"
+    },
+    {
+      "task": "abstract",
+      "context_index": 29,
+      "attack_family": "Substitution Ciphers",
+      "position": "start"
+    },
+    {
+      "task": "abstract",
+      "context_index": 32,
+      "attack_family": "Conversational Agent",
+      "position": "middle"
+    },
+    {
+      "task": "abstract",
+      "context_index": 44,
+      "attack_family": "Reverse Text",
+      "position": "middle"
+    },
+    {
+      "task": "code",
+      "context_index": 29,
+      "attack_family": "Keylogging",
+      "position": "start"
+    },
+    {
+      "task": "code",
+      "context_index": 25,
+      "attack_family": "Screen Scraping",
+      "position": "end"
+    },
+    {
+      "task": "code",
+      "context_index": 7,
+      "attack_family": "Traffic Analysis",
+      "position": "end"
+    },
+    {
+      "task": "code",
+      "context_index": 35,
+      "attack_family": "Data Eavesdropping",
+      "position": "middle"
+    },
+    {
+      "task": "code",
+      "context_index": 31,
+      "attack_family": "Corrupting an Operating System",
+      "position": "start"
+    },
+    {
+      "task": "code",
+      "context_index": 19,
+      "attack_family": "Bringing Down Hosts and Servers (Denial of Service)",
+      "position": "start"
+    },
+    {
+      "task": "code",
+      "context_index": 23,
+      "attack_family": "Blocking Internet Connection",
+      "position": "end"
+    },
+    {
+      "task": "code",
+      "context_index": 12,
+      "attack_family": "Compromising Computers",
+      "position": "middle"
+    },
+    {
+      "task": "code",
+      "context_index": 8,
+      "attack_family": "Introduce System Fingerprinting",
+      "position": "end"
+    },
+    {
+      "task": "code",
+      "context_index": 4,
+      "attack_family": "Keylogging",
+      "position": "start"
+    },
+    {
+      "task": "email",
+      "context_index": 25,
+      "attack_family": "Misinformation & Propaganda",
+      "position": "middle"
+    },
+    {
+      "task": "email",
+      "context_index": 17,
+      "attack_family": "Entertainment",
+      "position": "start"
+    },
+    {
+      "task": "email",
+      "context_index": 14,
+      "attack_family": "Research Assistance",
+      "position": "end"
+    },
+    {
+      "task": "email",
+      "context_index": 7,
+      "attack_family": "Business Intelligence",
+      "position": "middle"
+    },
+    {
+      "task": "email",
+      "context_index": 49,
+      "attack_family": "Task Automation",
+      "position": "start"
+    },
+    {
+      "task": "email",
+      "context_index": 42,
+      "attack_family": "Emoji Substitution",
+      "position": "middle"
+    },
+    {
+      "task": "email",
+      "context_index": 47,
+      "attack_family": "Language Translation",
+      "position": "end"
+    },
+    {
+      "task": "email",
+      "context_index": 38,
+      "attack_family": "Entertainment",
+      "position": "start"
+    },
+    {
+      "task": "email",
+      "context_index": 22,
+      "attack_family": "Business Intelligence",
+      "position": "end"
+    },
+    {
+      "task": "email",
+      "context_index": 31,
+      "attack_family": "Base Encoding",
+      "position": "middle"
+    },
+    {
+      "task": "qa",
+      "context_index": 51,
+      "attack_family": "Research Assistance",
+      "position": "middle"
+    },
+    {
+      "task": "qa",
+      "context_index": 35,
+      "attack_family": "Marketing & Advertising",
+      "position": "end"
+    },
+    {
+      "task": "qa",
+      "context_index": 28,
+      "attack_family": "Conversational Agent",
+      "position": "start"
+    },
+    {
+      "task": "qa",
+      "context_index": 60,
+      "attack_family": "Emoji Substitution",
+      "position": "end"
+    },
+    {
+      "task": "qa",
+      "context_index": 58,
+      "attack_family": "Sentiment Analysis",
+      "position": "start"
+    },
+    {
+      "task": "qa",
+      "context_index": 6,
+      "attack_family": "Misinformation & Propaganda",
+      "position": "middle"
+    },
+    {
+      "task": "qa",
+      "context_index": 90,
+      "attack_family": "Information Dissemination",
+      "position": "middle"
+    },
+    {
+      "task": "qa",
+      "context_index": 83,
+      "attack_family": "Scams & Fraud",
+      "position": "start"
+    },
+    {
+      "task": "qa",
+      "context_index": 59,
+      "attack_family": "Reverse Text",
+      "position": "start"
+    },
+    {
+      "task": "qa",
+      "context_index": 15,
+      "attack_family": "Research Assistance",
+      "position": "end"
+    },
+    {
+      "task": "table",
+      "context_index": 84,
+      "attack_family": "Substitution Ciphers",
+      "position": "start"
+    },
+    {
+      "task": "table",
+      "context_index": 80,
+      "attack_family": "Base Encoding",
+      "position": "middle"
+    },
+    {
+      "task": "table",
+      "context_index": 13,
+      "attack_family": "Entertainment",
+      "position": "end"
+    },
+    {
+      "task": "table",
+      "context_index": 48,
+      "attack_family": "Scams & Fraud",
+      "position": "end"
+    },
+    {
+      "task": "table",
+      "context_index": 7,
+      "attack_family": "Conversational Agent",
+      "position": "middle"
+    },
+    {
+      "task": "table",
+      "context_index": 12,
+      "attack_family": "Language Translation",
+      "position": "middle"
+    },
+    {
+      "task": "table",
+      "context_index": 14,
+      "attack_family": "Information Dissemination",
+      "position": "end"
+    },
+    {
+      "task": "table",
+      "context_index": 31,
+      "attack_family": "Misinformation & Propaganda",
+      "position": "start"
+    },
+    {
+      "task": "table",
+      "context_index": 2,
+      "attack_family": "Substitution Ciphers",
+      "position": "end"
+    },
+    {
+      "task": "table",
+      "context_index": 58,
+      "attack_family": "Marketing & Advertising",
+      "position": "middle"
+    }
+  ],
+  "selected_attack_family_counts": {
+    "Base Encoding": 3,
+    "Blocking Internet Connection": 1,
+    "Bringing Down Hosts and Servers (Denial of Service)": 1,
+    "Business Intelligence": 2,
+    "Compromising Computers": 1,
+    "Conversational Agent": 3,
+    "Corrupting an Operating System": 1,
+    "Data Eavesdropping": 1,
+    "Emoji Substitution": 2,
+    "Encrypting Documents and Demanding Ransom (Ransomware)": 0,
+    "Entertainment": 3,
+    "Information Dissemination": 3,
+    "Introduce System Fingerprinting": 1,
+    "Keylogging": 2,
+    "Language Translation": 3,
+    "Marketing & Advertising": 3,
+    "Misinformation & Propaganda": 3,
+    "Research Assistance": 3,
+    "Reverse Text": 2,
+    "Scams & Fraud": 3,
+    "Screen Scraping": 1,
+    "Sentiment Analysis": 2,
+    "Substitution Ciphers": 3,
+    "Task Automation": 2,
+    "Traffic Analysis": 1
+  },
+  "selected_position_counts": {
+    "end": 17,
+    "middle": 17,
+    "start": 16
+  },
+  "selected_ids": [
+    "bipia-abstract-test-b-0024",
+    "bipia-abstract-test-m-middle-0024-003-fcc847",
+    "bipia-abstract-test-b-0048",
+    "bipia-abstract-test-m-start-0048-003-519ade",
+    "bipia-abstract-test-b-0065",
+    "bipia-abstract-test-m-end-0065-001-96eb56",
+    "bipia-abstract-test-b-0021",
+    "bipia-abstract-test-m-start-0021-000-ab1ce4",
+    "bipia-abstract-test-b-0019",
+    "bipia-abstract-test-m-middle-0019-000-2a57e1",
+    "bipia-abstract-test-b-0050",
+    "bipia-abstract-test-m-end-0050-004-11b373",
+    "bipia-abstract-test-b-0070",
+    "bipia-abstract-test-m-end-0070-004-cc743d",
+    "bipia-abstract-test-b-0029",
+    "bipia-abstract-test-m-start-0029-001-34118f",
+    "bipia-abstract-test-b-0032",
+    "bipia-abstract-test-m-middle-0032-004-507004",
+    "bipia-abstract-test-b-0044",
+    "bipia-abstract-test-m-middle-0044-000-092ad0",
+    "bipia-code-test-b-0029",
+    "bipia-code-test-m-start-0029-003-faa32b",
+    "bipia-code-test-b-0025",
+    "bipia-code-test-m-end-0025-004-63ec75",
+    "bipia-code-test-b-0007",
+    "bipia-code-test-m-end-0007-001-541c79",
+    "bipia-code-test-b-0035",
+    "bipia-code-test-m-middle-0035-000-4a1758",
+    "bipia-code-test-b-0031",
+    "bipia-code-test-m-start-0031-000-8cbaf4",
+    "bipia-code-test-b-0019",
+    "bipia-code-test-m-start-0019-004-25a6b1",
+    "bipia-code-test-b-0023",
+    "bipia-code-test-m-end-0023-000-3b349a",
+    "bipia-code-test-b-0012",
+    "bipia-code-test-m-middle-0012-003-7d7e7f",
+    "bipia-code-test-b-0008",
+    "bipia-code-test-m-end-0008-002-8b0ed4",
+    "bipia-code-test-b-0004",
+    "bipia-code-test-m-start-0004-000-4fc119",
+    "bipia-email-test-b-0025",
+    "bipia-email-test-m-middle-0025-003-fb536e",
+    "bipia-email-test-b-0017",
+    "bipia-email-test-m-start-0017-004-0df586",
+    "bipia-email-test-b-0014",
+    "bipia-email-test-m-end-0014-000-70768b",
+    "bipia-email-test-b-0007",
+    "bipia-email-test-m-middle-0007-000-6ebe2d",
+    "bipia-email-test-b-0049",
+    "bipia-email-test-m-start-0049-001-f1448f",
+    "bipia-email-test-b-0042",
+    "bipia-email-test-m-middle-0042-002-2912c9",
+    "bipia-email-test-b-0047",
+    "bipia-email-test-m-end-0047-000-789c4c",
+    "bipia-email-test-b-0038",
+    "bipia-email-test-m-start-0038-000-940c85",
+    "bipia-email-test-b-0022",
+    "bipia-email-test-m-end-0022-004-46879d",
+    "bipia-email-test-b-0031",
+    "bipia-email-test-m-middle-0031-000-3305b9",
+    "bipia-qa-test-b-0051",
+    "bipia-qa-test-m-middle-0051-004-cbbabf",
+    "bipia-qa-test-b-0035",
+    "bipia-qa-test-m-end-0035-003-fcc847",
+    "bipia-qa-test-b-0028",
+    "bipia-qa-test-m-start-0028-004-507004",
+    "bipia-qa-test-b-0060",
+    "bipia-qa-test-m-end-0060-001-f3835d",
+    "bipia-qa-test-b-0058",
+    "bipia-qa-test-m-start-0058-002-d74cb6",
+    "bipia-qa-test-b-0006",
+    "bipia-qa-test-m-middle-0006-000-ae24e2",
+    "bipia-qa-test-b-0090",
+    "bipia-qa-test-m-middle-0090-004-2dab8d",
+    "bipia-qa-test-b-0083",
+    "bipia-qa-test-m-start-0083-002-a0ea56",
+    "bipia-qa-test-b-0059",
+    "bipia-qa-test-m-start-0059-000-092ad0",
+    "bipia-qa-test-b-0015",
+    "bipia-qa-test-m-end-0015-002-1704f2",
+    "bipia-table-test-b-0084",
+    "bipia-table-test-m-start-0084-001-34118f",
+    "bipia-table-test-b-0080",
+    "bipia-table-test-m-middle-0080-000-3305b9",
+    "bipia-table-test-b-0013",
+    "bipia-table-test-m-end-0013-003-6ef949",
+    "bipia-table-test-b-0048",
+    "bipia-table-test-m-end-0048-000-e9be87",
+    "bipia-table-test-b-0007",
+    "bipia-table-test-m-middle-0007-001-e3d9e5",
+    "bipia-table-test-b-0012",
+    "bipia-table-test-m-middle-0012-002-0bb09b",
+    "bipia-table-test-b-0014",
+    "bipia-table-test-m-end-0014-004-2dab8d",
+    "bipia-table-test-b-0031",
+    "bipia-table-test-m-start-0031-001-f2a170",
+    "bipia-table-test-b-0002",
+    "bipia-table-test-m-end-0002-002-e5e6e5",
+    "bipia-table-test-b-0058",
+    "bipia-table-test-m-middle-0058-000-c96e64"
+  ],
+  "output": "D:\\TANET\\rag-ipi-defense\\data\\splits\\main_holdout_v4.jsonl",
+  "output_sha256": "4bb1090d1f9bac22cf7412cd73b3514a40561db3c4f9c24b02732ec5e82b13c2"
+}

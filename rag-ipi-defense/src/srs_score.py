@@ -12,7 +12,7 @@ import json
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Protocol
 
 
 INSTRUCTION_PATTERNS = (
@@ -93,6 +93,12 @@ def intent_shift_score(xuser: str, xext: str) -> float:
     return 1.0 - (len(user_tokens & ext_tokens) / len(user_tokens | ext_tokens))
 
 
+class IntentScorer(Protocol):
+    method: str
+
+    def score(self, xuser: str, xext: str) -> float: ...
+
+
 def pattern_density_score(
     text: str, patterns: Iterable[str], saturation_hits: float = 2.0
 ) -> tuple[float, list[str]]:
@@ -106,12 +112,17 @@ def compute_srs(
     xext: str,
     config: SRSConfig | None = None,
     enabled_features: tuple[str, ...] = ("intent", "instruction", "pressure"),
+    intent_scorer: IntentScorer | None = None,
 ) -> dict:
     """Compute an SRS record, normalizing weights for feature ablations."""
     config = config or SRSConfig()
     config.validate()
 
-    intent = intent_shift_score(xuser, xext)
+    intent = (
+        intent_scorer.score(xuser, xext)
+        if intent_scorer is not None
+        else intent_shift_score(xuser, xext)
+    )
     instruction, instruction_matches = pattern_density_score(
         xext, INSTRUCTION_PATTERNS, config.instruction_saturation_hits
     )
@@ -146,7 +157,7 @@ def compute_srs(
         "pressure_signal": round(pressure, 6),
         "srs": round(srs, 6),
         "tier1_decision": decision,
-        "intent_method": config.intent_method,
+        "intent_method": intent_scorer.method if intent_scorer is not None else config.intent_method,
         "enabled_features": list(enabled_features),
         "instruction_matches": instruction_matches,
         "pressure_matches": pressure_matches,
@@ -171,7 +182,7 @@ def main() -> None:
     parser.add_argument("paths", nargs="*", type=Path)
     args = parser.parse_args()
     base_dir = Path(__file__).resolve().parent.parent
-    paths = args.paths or [base_dir / "data" / "malicious.jsonl", base_dir / "data" / "benign.jsonl"]
+    paths = args.paths or [base_dir / "data" / "splits" / "validation.jsonl"]
     config = SRSConfig()
     print(json.dumps({"config": asdict(config)}, ensure_ascii=False))
     for path in paths:

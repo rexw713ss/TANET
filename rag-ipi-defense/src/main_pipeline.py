@@ -206,6 +206,7 @@ def run_method(
     tau_judge: float,
     on_judge_error: str,
     judge_cache: dict[str, tuple[dict, float]],
+    intent_scorer=None,
 ) -> list[dict]:
     enabled = {
         "ablation_intent": ("intent",),
@@ -218,7 +219,9 @@ def run_method(
     for item in dataset:
         total_started = time.perf_counter_ns()
         tier1_started = time.perf_counter_ns()
-        srs = compute_srs(item["xuser"], item["xext"], srs_config, enabled)
+        srs = compute_srs(
+            item["xuser"], item["xext"], srs_config, enabled, intent_scorer=intent_scorer
+        )
         tier1_latency_ms = (time.perf_counter_ns() - tier1_started) / 1_000_000
         adjudication = None
         tier2_latency_ms = 0.0
@@ -316,7 +319,7 @@ def parse_args() -> argparse.Namespace:
         "--data",
         nargs="+",
         type=Path,
-        default=[base_dir / "data" / "malicious.jsonl", base_dir / "data" / "benign.jsonl"],
+        default=[base_dir / "data" / "splits" / "validation.jsonl"],
     )
     parser.add_argument(
         "--methods",
@@ -330,6 +333,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--alpha", type=float, default=0.15)
     parser.add_argument("--beta", type=float, default=0.70)
     parser.add_argument("--gamma", type=float, default=0.15)
+    parser.add_argument(
+        "--intent-method",
+        choices=("lexical_jaccard_proxy", "multilingual_e5"),
+        default="lexical_jaccard_proxy",
+    )
+    parser.add_argument("--embedding-model", default="intfloat/multilingual-e5-small")
+    parser.add_argument("--embedding-revision", default="fd1525a9fd15316a2d503bf26ab031a61d056e98")
+    parser.add_argument(
+        "--embedding-cache", type=Path, default=base_dir / "data" / "cache" / "embedding.sqlite3"
+    )
     parser.add_argument("--model", default=None)
     parser.add_argument("--on-judge-error", choices=("block", "pass"), default="block")
     return parser.parse_args()
@@ -341,12 +354,26 @@ def main() -> None:
     unknown = set(methods) - SUPPORTED_METHODS
     if unknown:
         raise ValueError(f"Unsupported methods: {sorted(unknown)}")
+    intent_scorer = None
+    intent_method = "lexical_jaccard_proxy"
+    if args.intent_method == "multilingual_e5":
+        from embedding_intent import EmbeddingConfig, EmbeddingIntentScorer
+
+        intent_scorer = EmbeddingIntentScorer(
+            EmbeddingConfig(
+                model_id=args.embedding_model,
+                revision=args.embedding_revision,
+                cache_path=str(args.embedding_cache),
+            )
+        )
+        intent_method = intent_scorer.method
     srs_config = SRSConfig(
         alpha=args.alpha,
         beta=args.beta,
         gamma=args.gamma,
         tau_low=args.tau_low,
         tau_high=args.tau_high,
+        intent_method=intent_method,
     )
     srs_config.validate()
     ollama_config = OllamaConfig.from_env(args.model)
@@ -365,6 +392,7 @@ def main() -> None:
             args.tau_judge,
             args.on_judge_error,
             judge_cache,
+            intent_scorer,
         )
         all_predictions.extend(predictions)
         all_metrics[method] = compute_metrics(predictions)
@@ -378,6 +406,7 @@ def main() -> None:
         "dataset_sources": sorted({row["source"] for row in dataset}),
         "methods": methods,
         "srs_config": asdict(srs_config),
+        "embedding_config": intent_scorer.metadata() if intent_scorer is not None else None,
         "ollama_config": asdict(ollama_config),
         "tier2_protocol": {
             "prompt_sha256": hashlib.sha256(ADJUDICATOR_PROMPT.encode("utf-8")).hexdigest(),
@@ -389,13 +418,19 @@ def main() -> None:
         "on_judge_error": args.on_judge_error,
         "limitations": [
             "local_smoke data are not BIPIA and cannot support benchmark claims",
-            "intent_shift uses a lexical Jaccard proxy because no embedding model is configured",
+            (
+                "intent_shift uses a lexical Jaccard proxy"
+                if intent_scorer is None
+                else "semantic intent shift uses a pinned local multilingual E5 ONNX model"
+            ),
             "attack_success_rate and utility_preservation require a downstream RAG task harness",
         ],
     }
     write_results(args.output_dir, manifest, all_predictions, all_metrics)
     print(json.dumps(all_metrics, ensure_ascii=False, indent=2))
     print(f"Results written to {args.output_dir.resolve()}")
+    if intent_scorer is not None:
+        intent_scorer.close()
 
 
 if __name__ == "__main__":

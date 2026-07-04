@@ -1,0 +1,5 @@
+# Optional local embedding runtime for semantic Dintent.
+onnxruntime>=1.20,<2
+transformers>=4.50,<6
+huggingface-hub>=0.30,<2
+sentencepiece>=0.2,<1

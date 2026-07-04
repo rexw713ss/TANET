@@ -1,25 +1,18 @@
 # RAG 間接提示注入雙層防禦實驗
 
-本專案是研究計畫的實驗骨架。現有 `data/*.jsonl` 僅有 40 筆自建 smoke-test 樣本，用來確認程式與指標是否正常，**不是 BIPIA 主實驗結果**。
+本專案已完成五任務 BIPIA 預註冊主實驗（含 WebQA）、Wilson／配對不確定性估計、family evaluator 獨立 audit，以及 validation-only Gate 安全—成本曲線。最新結果與限制見 [2026-07-04 實驗狀態](docs/experiment-status-2026-07-04.md)。
 
-## 執行
+主實驗的核心結果：no-defense ASR 24.0% [14.30%, 37.41%]，two-stage ASR 2.0% [0.35%, 10.50%]；配對差 −22 percentage points [−34, −12]，exact McNemar `p=0.0009766`。two-stage benign utility preservation 為 96.84%，Tier-2 trigger rate 26%。
 
-離線執行不需本地模型的基準與消融：
+## 最新實驗輸出
 
-```powershell
-.\env\Scripts\python.exe .\rag-ipi-defense\src\main_pipeline.py `
-  --methods no_defense,keyword,srs_only,ablation_intent,ablation_instruction,ablation_pressure,ablation_all `
-  --output-dir .\rag-ipi-defense\results\offline-smoke
-```
+- `results/main-holdout-v4/`：100 筆五任務主實驗與配對分析。
+- `results/family-evaluator-audit/`：31B 獨立複核與人工標註表。
+- `results/gate-safety-cost/`：Gate Pareto curve。
+- `results/tier2-validation-v3/`：30 筆 Tier-2 validation hard cases。
+- `results/calibration/`、`results/gate-calibration-v2/`：只使用 validation 的門檻與權重。
 
-執行完整雙層方法（需要 Ollama 與本地模型）：
-
-```powershell
-$env:OLLAMA_MODEL = "gemma4:latest"
-.\env\Scripts\python.exe .\rag-ipi-defense\src\main_pipeline.py `
-  --methods two_stage `
-  --output-dir .\rag-ipi-defense\results\two-stage-smoke
-```
+## 執行測試
 
 執行測試：
 
@@ -27,23 +20,47 @@ $env:OLLAMA_MODEL = "gemma4:latest"
 .\env\Scripts\python.exe -m unittest discover -s .\rag-ipi-defense\tests -v
 ```
 
-每次實驗會輸出 `manifest.json`、`predictions.jsonl`、`metrics.json` 與 `metrics.csv`。`manifest.json` 記錄資料、模型、門檻、權重與已知限制。
+## 重建最新 validation 與主實驗
 
-## 指標解讀
+建立不讓 context 或 attack variant 跨越 fit/validation 的資料，並另外建立 official-test sample：
 
-- `detection_escape_rate_proxy` 是惡意樣本的分類假陰性率，不能直接稱為 ASR。
-- 真正的 `attack_success_rate` 必須接上目標 RAG 模型，並判斷攻擊是否實際改變下游輸出。
-- `utility_preservation` 必須有原任務參考答案或任務品質評估器，目前保持為 `null`。
-- `auprc_average_precision` 使用 ranking-based Average Precision 計算。
+```powershell
+.\env\Scripts\python.exe .\rag-ipi-defense\scripts\prepare_experiment_splits.py `
+  --test-contexts-per-task 100 --test-malicious-per-context 15
+```
 
-完整落差與下一步見 [docs/research-alignment.md](docs/research-alignment.md)。
+安裝本機 multilingual-E5 ONNX runtime，僅在 validation 選擇權重與門檻：
+
+```powershell
+.\env\Scripts\python.exe -m pip install -r .\rag-ipi-defense\requirements-embedding.txt
+.\env\Scripts\python.exe .\rag-ipi-defense\src\calibrate_srs.py
+```
+
+主實驗資料已由 `main_holdout_v4_manifest.json` 鎖定。以下指令只供重現，不可再依 test 結果改 Gate：
+
+```powershell
+.\env\Scripts\python.exe .\rag-ipi-defense\src\downstream_rag.py `
+  --data .\rag-ipi-defense\data\splits\main_holdout_v4.jsonl `
+  --methods no_defense,boundary_reminder,srs_only,two_stage `
+  --tasks email,table,code,qa,abstract --limit-per-label-task 0 `
+  --output-dir .\rag-ipi-defense\results\main-holdout-v4
+```
+
+Tier-2、Gate curve 與 family audit：
+
+```powershell
+.\env\Scripts\python.exe .\rag-ipi-defense\src\evaluate_tier2_validation.py `
+  --prompts v3 --per-label-task 3 --output-dir .\rag-ipi-defense\results\tier2-validation-v3
+.\env\Scripts\python.exe .\rag-ipi-defense\src\gate_safety_cost_curve.py
+.\env\Scripts\python.exe .\rag-ipi-defense\src\audit_family_evaluator.py `
+  --predictions .\rag-ipi-defense\results\main-holdout-v4\predictions.jsonl `
+  --independent-model gemma4:31b
+```
 
 ## 匯入 BIPIA
 
-repo 內直接提供的 EmailQA、TableQA、CodeQA test split 可轉成目前 detector schema：
+WebQA 重建狀態記錄於 `data/bipia/webqa_reproduction.json`；目前公開官方輸入可完成內容重現，但無法重現 BIPIA repo 內建 exact MD5。
 
 ```powershell
-.\env\Scripts\python.exe .\rag-ipi-defense\scripts\import_bipia.py
+.\env\Scripts\python.exe .\rag-ipi-defense\scripts\prepare_bipia_newsqa.py
 ```
-
-輸出位於 `data/bipia/test_malicious.jsonl`、`test_benign.jsonl` 與 `manifest.json`。WebQA（NewsQA）與 Summarization（XSum）必須先依 BIPIA `benchmark/README.md` 閱讀來源條款並產生原始 context files；匯入器不會代替使用者接受條款。

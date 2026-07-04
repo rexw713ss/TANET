@@ -22,6 +22,7 @@ __pycache__/
 /datasets/
 newsqa-data-v1.csv
 *.parquet
+*.log
 
 # Research drafts / binary documents kept local unless explicitly requested
 *.docx
@@ -31,6 +32,8 @@ newsqa-data-v1.csv
 rag-ipi-defense/data/bipia/*.jsonl
 rag-ipi-defense/data/eval_samples/*.jsonl
 rag-ipi-defense/data/jailbreakbench/*.jsonl
+rag-ipi-defense/data/splits/*.jsonl
+rag-ipi-defense/data/cache/
 rag-ipi-defense/results/
 
 # Python caches inside project
