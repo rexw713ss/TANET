@@ -33,6 +33,7 @@ rag-ipi-defense/data/bipia/*.jsonl
 rag-ipi-defense/data/eval_samples/*.jsonl
 rag-ipi-defense/data/jailbreakbench/*.jsonl
 rag-ipi-defense/data/splits/*.jsonl
+rag-ipi-defense/data/external_stability/*.jsonl
 rag-ipi-defense/data/cache/
 
 # Python caches inside project

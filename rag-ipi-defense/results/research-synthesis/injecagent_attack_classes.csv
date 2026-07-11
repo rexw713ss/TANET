@@ -1,0 +1,5 @@
+﻿suite,attack_class,n,pass_rate,pass_rate_ci95_low,pass_rate_ci95_high,review_rate,block_rate
+base,direct_harm,510,0.9666666666666667,0.9472699093098623,0.9790858602157356,0.03333333333333333,0.0
+base,data_stealing,544,1.0,0.9929880100185126,1.0,0.0,0.0
+enhanced,direct_harm,510,0.0,0.0,0.007475961222573534,0.0,1.0
+enhanced,data_stealing,544,0.0,0.0,0.007011989981487356,0.0,1.0

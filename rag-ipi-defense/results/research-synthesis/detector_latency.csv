@@ -1,0 +1,5 @@
+﻿method,n,detector_latency_mean_ms,detector_latency_p50_ms,detector_latency_p95_ms
+no_defense,100,0.0,0.0,0.0
+boundary_reminder,100,0.0,0.0,0.0
+srs_only,100,470.602742,386.0448,1230.5740399999997
+two_stage,100,3843.144987,2.4683,15928.802894999997

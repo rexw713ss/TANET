@@ -1,0 +1,40 @@
+{
+  "purpose": "Frozen external Tier-1 Gate stability evaluation; not calibration and not downstream ASR.",
+  "sources": {
+    "InjecAgent": {
+      "url": "https://github.com/uiuc-kang-lab/InjecAgent",
+      "commit": "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
+      "license": "MIT"
+    },
+    "HouYi": {
+      "url": "https://github.com/LLMSecurity/HouYi",
+      "commit": "cd2e06c8cecc2934b9e64f0cd0d38e9acc6898c8",
+      "license": "Apache-2.0"
+    }
+  },
+  "construction": {
+    "InjecAgent": "Complete 1,054 base and 1,054 enhanced test cases plus 17 clean user-tool controls.",
+    "HouYi": "Offline Cartesian seed population: 17 tool cases x 5 separators x 3 disruptors x 5 intentions, plus 17 clean controls. LLM mutation/fitness optimization is intentionally not claimed."
+  },
+  "counts": {
+    "HouYi.clean.benign": 17,
+    "HouYi.seed_population.malicious": 1275,
+    "InjecAgent.base.malicious": 1054,
+    "InjecAgent.clean.benign": 17,
+    "InjecAgent.enhanced.malicious": 1054
+  },
+  "outputs": {
+    "injecagent": {
+      "path": "injecagent.jsonl",
+      "rows": 2125,
+      "bytes": 2242033,
+      "sha256": "7b341dfb0fd0ae308dff5931f8a9508323c9478d9d20021dfa601f7c73b3a42f"
+    },
+    "houyi": {
+      "path": "houyi_seed.jsonl",
+      "rows": 1292,
+      "bytes": 1361165,
+      "sha256": "04ca02bcea04530b0fdb73efd679c441729916cabecfbaa2e647d4f44170f509"
+    }
+  }
+}

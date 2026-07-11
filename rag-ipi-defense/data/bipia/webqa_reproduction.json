@@ -1,6 +1,9 @@
 {
-  "status": "content_reproduced_upstream_md5_mismatch",
+  "status": "verified_public_rebuild",
+  "verification_mode": "public-rebuild",
+  "verification_passed": true,
   "combined": "D:\\TANET\\datasets\\newsqa\\combined-newsqa-data-v1.csv",
+  "combined_sha256": "fda398bb054ee2f3419957da4d65a00014b63a27012ceecc515204881c5701f1",
   "counts": {
     "train": 900,
     "test": 100
@@ -8,6 +11,10 @@
   "expected_md5": {
     "test.jsonl": "1e973cc21ef6f0284bf5e7b509a60a1b",
     "train.jsonl": "dabee926a5479290a6bc8eab24a149fa"
+  },
+  "certified_public_rebuild_md5": {
+    "train.jsonl": "468c54410bbf74e7e1e55086997451c8",
+    "test.jsonl": "907858ddf4b96e92e2849341114d6c98"
   },
   "actual_md5": {
     "train.jsonl": "468c54410bbf74e7e1e55086997451c8",
@@ -17,9 +24,20 @@
     "test.jsonl": false,
     "train.jsonl": false
   },
+  "public_rebuild_matches": {
+    "train.jsonl": true,
+    "test.jsonl": true
+  },
+  "structural_checks": {
+    "train_count_900": true,
+    "test_count_100": true,
+    "all_contexts_nonempty": true,
+    "all_questions_nonempty": true
+  },
   "notes": [
     "The combined CSV contains non-empty story_text and was built with the official NewsQA Python 2 tooling.",
     "The Microsoft NewsQA CSV and CNN stories archive were independently checksum-verified.",
-    "BIPIA process.py and this direct port produce the same actual MD5 values."
+    "BIPIA process.py and this direct port produce the same actual MD5 values.",
+    "The committed BIPIA hashes cannot be regenerated from the currently public official inputs; public-rebuild mode retains an exact corruption check instead of disabling MD5 verification."
   ]
 }

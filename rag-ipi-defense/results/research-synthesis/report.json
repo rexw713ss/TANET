@@ -1,0 +1,144 @@
+{
+  "scope": "Paper-ready synthesis of frozen artifacts; validation ablation is descriptive; sealed test is not recalibrated.",
+  "inputs": {
+    "validation_features": "results/calibration/validation_features.jsonl",
+    "main_predictions": "results/main-holdout-v4/predictions.jsonl",
+    "external_report": "results/external-stability/report.json",
+    "external_predictions": "results/external-stability/predictions.jsonl"
+  },
+  "validation_ablation": [
+    {
+      "feature_set": "intent_only",
+      "n": 380,
+      "malicious_prevalence": 0.75,
+      "auprc_average_precision": 0.7243739896404708,
+      "auprc_lift_over_prevalence": 0.9658319861872945,
+      "operating_point_rule": "maximize recall subject to validation FPR <= 1%; block when score > threshold",
+      "threshold": 0.300965,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "false_positive_rate": 0.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 285,
+      "tn": 95
+    },
+    {
+      "feature_set": "instruction_only",
+      "n": 380,
+      "malicious_prevalence": 0.75,
+      "auprc_average_precision": 0.8447368421052632,
+      "auprc_lift_over_prevalence": 1.1263157894736844,
+      "operating_point_rule": "maximize recall subject to validation FPR <= 1%; block when score > threshold",
+      "threshold": 0.0,
+      "precision": 1.0,
+      "recall": 0.37894736842105264,
+      "f1": 0.549618320610687,
+      "false_positive_rate": 0.0,
+      "tp": 108,
+      "fp": 0,
+      "fn": 177,
+      "tn": 95
+    },
+    {
+      "feature_set": "pressure_only",
+      "n": 380,
+      "malicious_prevalence": 0.75,
+      "auprc_average_precision": 0.75,
+      "auprc_lift_over_prevalence": 1.0,
+      "operating_point_rule": "maximize recall subject to validation FPR <= 1%; block when score > threshold",
+      "threshold": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "false_positive_rate": 0.0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 285,
+      "tn": 95
+    },
+    {
+      "feature_set": "selected_srs",
+      "n": 380,
+      "malicious_prevalence": 0.75,
+      "auprc_average_precision": 0.8851472823868145,
+      "auprc_lift_over_prevalence": 1.1801963765157526,
+      "operating_point_rule": "maximize recall subject to validation FPR <= 1%; block when score > threshold",
+      "threshold": 0.180579,
+      "precision": 1.0,
+      "recall": 0.37894736842105264,
+      "f1": 0.549618320610687,
+      "false_positive_rate": 0.0,
+      "tp": 108,
+      "fp": 0,
+      "fn": 177,
+      "tn": 95
+    }
+  ],
+  "headline_effect": {
+    "no_defense_asr": 0.24,
+    "two_stage_asr": 0.02,
+    "absolute_risk_reduction": 0.22,
+    "relative_asr_reduction": 0.9166666666666667,
+    "paired_difference_ci95": [
+      -0.34,
+      -0.12
+    ],
+    "exact_mcnemar_p": 0.0009765625
+  },
+  "external_generalization": {
+    "injecagent_base_pass_rate": 0.9838709677419355,
+    "injecagent_enhanced_block_rate": 1.0,
+    "injecagent_pair_decision_agreement": 0.0,
+    "houyi_seed_pass_rate": 0.672156862745098,
+    "houyi_all_variants_intercepted_rate": 0.0,
+    "injecagent_by_attack_class": [
+      {
+        "suite": "base",
+        "attack_class": "direct_harm",
+        "n": 510,
+        "pass_rate": 0.9666666666666667,
+        "pass_rate_ci95_low": 0.9472699093098623,
+        "pass_rate_ci95_high": 0.9790858602157356,
+        "review_rate": 0.03333333333333333,
+        "block_rate": 0.0
+      },
+      {
+        "suite": "base",
+        "attack_class": "data_stealing",
+        "n": 544,
+        "pass_rate": 1.0,
+        "pass_rate_ci95_low": 0.9929880100185126,
+        "pass_rate_ci95_high": 1.0,
+        "review_rate": 0.0,
+        "block_rate": 0.0
+      },
+      {
+        "suite": "enhanced",
+        "attack_class": "direct_harm",
+        "n": 510,
+        "pass_rate": 0.0,
+        "pass_rate_ci95_low": 0.0,
+        "pass_rate_ci95_high": 0.007475961222573534,
+        "review_rate": 0.0,
+        "block_rate": 1.0
+      },
+      {
+        "suite": "enhanced",
+        "attack_class": "data_stealing",
+        "n": 544,
+        "pass_rate": 0.0,
+        "pass_rate_ci95_low": 0.0,
+        "pass_rate_ci95_high": 0.007011989981487356,
+        "review_rate": 0.0,
+        "block_rate": 1.0
+      }
+    ]
+  },
+  "interpretation_guardrails": [
+    "External PASS is a Tier-1 detector escape proxy, not downstream agent ASR.",
+    "Subgroup estimates are exploratory and small; no multiplicity-adjusted significance claim is made.",
+    "Validation ablation supports feature design but is not an independent test-set comparison."
+  ]
+}

@@ -74,11 +74,84 @@ class MetricTests(unittest.TestCase):
 
 
 class DataAndAdjudicatorTests(unittest.TestCase):
-    def test_latest_preregistered_dataset(self):
-        rows = load_dataset([ROOT / "data" / "splits" / "main_holdout_v4.jsonl"])
-        self.assertEqual(len(rows), 100)
+    def test_jsonl_loader(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sample.jsonl"
+            path.write_text(
+                '\n'.join((
+                    json.dumps({"id": "b", "label": "benign", "xuser": "q", "xext": "c"}),
+                    json.dumps({"id": "m", "label": "malicious", "xuser": "q", "xext": "a"}),
+                )) + '\n',
+                encoding="utf-8",
+            )
+            rows = load_dataset([path])
+        self.assertEqual(len(rows), 2)
         self.assertEqual({row["label"] for row in rows}, {"malicious", "benign"})
-        self.assertEqual({row["task"] for row in rows}, {"abstract", "code", "email", "qa", "table"})
+
+    def test_latest_preregistered_manifest(self):
+        manifest = json.loads(
+            (ROOT / "data" / "splits" / "main_holdout_v4_manifest.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(len(manifest["selected_ids"]), 100)
+        self.assertEqual(
+            {item["task"] for item in manifest["selected_context_groups"]},
+            {"abstract", "code", "email", "qa", "table"},
+        )
+
+    def test_external_stability_artifacts(self):
+        manifest = json.loads(
+            (ROOT / "data" / "external_stability" / "manifest.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            manifest["sources"]["InjecAgent"]["commit"],
+            "f19c9f2c79a41046eb13c03c51a24c567a8ffa07",
+        )
+        self.assertEqual(
+            manifest["sources"]["HouYi"]["commit"],
+            "cd2e06c8cecc2934b9e64f0cd0d38e9acc6898c8",
+        )
+        self.assertEqual(manifest["counts"]["InjecAgent.base.malicious"], 1054)
+        self.assertEqual(manifest["counts"]["HouYi.seed_population.malicious"], 1275)
+        self.assertEqual(
+            manifest["outputs"]["injecagent"]["sha256"],
+            "7b341dfb0fd0ae308dff5931f8a9508323c9478d9d20021dfa601f7c73b3a42f",
+        )
+        self.assertEqual(
+            manifest["outputs"]["houyi"]["sha256"],
+            "04ca02bcea04530b0fdb73efd679c441729916cabecfbaa2e647d4f44170f509",
+        )
+        self.assertEqual(manifest["outputs"]["injecagent"]["path"], "injecagent.jsonl")
+        report = json.loads(
+            (ROOT / "results" / "external-stability" / "report.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(report["injecagent_pair_stability"]["paired_n"], 1054)
+        self.assertEqual(report["houyi_seed_stability"]["variant_groups"], 85)
+
+    def test_webqa_public_rebuild_verification(self):
+        report = json.loads(
+            (ROOT / "data" / "bipia" / "webqa_reproduction.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(report["status"], "verified_public_rebuild")
+        self.assertTrue(report["verification_passed"])
+        self.assertTrue(all(report["public_rebuild_matches"].values()))
+
+    def test_research_synthesis_artifacts(self):
+        report = json.loads(
+            (ROOT / "results" / "research-synthesis" / "report.json").read_text(encoding="utf-8")
+        )
+        self.assertAlmostEqual(report["headline_effect"]["relative_asr_reduction"], 11 / 12)
+        ablation = {row["feature_set"]: row for row in report["validation_ablation"]}
+        self.assertGreater(
+            ablation["selected_srs"]["auprc_average_precision"],
+            ablation["instruction_only"]["auprc_average_precision"],
+        )
+        classes = report["external_generalization"]["injecagent_by_attack_class"]
+        base_stealing = next(
+            row for row in classes
+            if row["suite"] == "base" and row["attack_class"] == "data_stealing"
+        )
+        self.assertEqual(base_stealing["n"], 544)
+        self.assertEqual(base_stealing["pass_rate"], 1.0)
 
     def test_evidence_must_be_verbatim(self):
         result = _validate_result(
