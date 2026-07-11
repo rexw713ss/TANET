@@ -14,6 +14,7 @@ from embedding_intent import chunk_external_text
 from family_asr import evaluate_attack
 from srs_score import SRSConfig, compute_srs
 from tier2_mac import AdjudicatorError, _validate_result, extract_candidate_spans
+from analyze_human_double_annotation import cohen_kappa as human_kappa, gwet_ac1
 
 
 class SRSTests(unittest.TestCase):
@@ -71,6 +72,10 @@ class MetricTests(unittest.TestCase):
 
     def test_uncertain_confidence_is_not_inverted_into_low_risk(self):
         self.assertEqual(adjudication_risk_score({"risk_label": "uncertain", "confidence": 0.99}), 0.5)
+
+    def test_human_agreement_metrics(self):
+        self.assertEqual(human_kappa(["0", "1"], ["0", "1"]), 1.0)
+        self.assertEqual(gwet_ac1(["0", "1"], ["0", "1"]), 1.0)
 
 
 class DataAndAdjudicatorTests(unittest.TestCase):
@@ -152,6 +157,66 @@ class DataAndAdjudicatorTests(unittest.TestCase):
         )
         self.assertEqual(base_stealing["n"], 544)
         self.assertEqual(base_stealing["pass_rate"], 1.0)
+
+    def test_human_double_annotation_packet(self):
+        directory = ROOT / "results" / "family-evaluator-human"
+        manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["rows"], 126)
+        with (directory / "annotator_b_to_label.csv").open(encoding="utf-8-sig", newline="") as handle:
+            import csv
+            rows = list(csv.DictReader(handle))
+        self.assertEqual(len(rows), 126)
+        self.assertTrue(all(not row["human_label"].strip() for row in rows))
+        self.assertNotIn("method", rows[0])
+        self.assertTrue(all(row["attack_instruction"].strip() for row in rows))
+
+    def test_new_replication_and_external_sample_are_frozen(self):
+        v4 = json.loads((ROOT / "data" / "splits" / "main_holdout_v4_manifest.json").read_text(encoding="utf-8"))
+        v5 = json.loads((ROOT / "data" / "splits" / "next_holdout_v5_manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(v5["status"], "locked before inference")
+        self.assertEqual(len(v5["selected_ids"]), 100)
+        v4_groups = {(row["task"], row["context_index"]) for row in v4["selected_context_groups"]}
+        v5_groups = {(row["task"], row["context_index"]) for row in v5["selected_context_groups"]}
+        self.assertTrue(v4_groups.isdisjoint(v5_groups))
+        external = json.loads(
+            (ROOT / "data" / "external_stability" / "two_stage_sample_manifest.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(external["status"], "frozen_before_tier2_execution")
+        self.assertEqual(external["rows"], 110)
+
+    def test_full_tier2_and_external_two_stage_results(self):
+        full = json.loads(
+            (ROOT / "results" / "full-tier2-baseline" / "comparison_report.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(full["metrics"]["full_tier2"]["n"], 100)
+        self.assertEqual(full["metrics"]["full_tier2"]["tier2_trigger_rate"], 1.0)
+        self.assertAlmostEqual(full["metrics"]["full_tier2"]["benign_block_rate"], 0.06)
+        self.assertAlmostEqual(full["routing_cost"]["tier2_call_reduction"], 0.74)
+        repair = json.loads(
+            (ROOT / "results" / "full-tier2-baseline" / "repair_provenance.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(repair["status"], "complete")
+        external = json.loads(
+            (ROOT / "results" / "external-two-stage-sample" / "report.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(external["rows"], 110)
+        self.assertEqual(external["injecagent_by_suite"]["base"]["pass_rate"], 1.0)
+        self.assertEqual(external["injecagent_by_suite"]["enhanced"]["pass_rate"], 0.0)
+        self.assertAlmostEqual(external["overall"]["HouYi"]["malicious"]["pass_rate"], 0.72)
+
+    def test_context_disjoint_replication_results(self):
+        v5 = json.loads((ROOT / "results" / "main-holdout-v5" / "metrics.json").read_text(encoding="utf-8"))
+        self.assertEqual(v5["no_defense"]["n"], 100)
+        self.assertEqual(v5["two_stage"]["n"], 100)
+        self.assertAlmostEqual(v5["no_defense"]["attack_success_rate"], 0.22)
+        self.assertEqual(v5["two_stage"]["attack_success_rate"], 0.0)
+        pooled = json.loads(
+            (ROOT / "results" / "sealed-replications-v4-v5" / "report.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(pooled["pooled"]["two_stage"]["n"], 200)
+        self.assertAlmostEqual(pooled["pooled"]["two_stage"]["attack_success_rate"], 0.01)
+        self.assertAlmostEqual(pooled["pooled_paired"]["attack_success_rate_difference"], -0.22)
+        self.assertEqual(pooled["pooled_paired"]["mcnemar"]["method_only_success"], 0)
 
     def test_evidence_must_be_verbatim(self):
         result = _validate_result(

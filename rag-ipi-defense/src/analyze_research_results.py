@@ -21,6 +21,9 @@ VALIDATION = ROOT / "results" / "calibration" / "validation_features.jsonl"
 MAIN = ROOT / "results" / "main-holdout-v4" / "predictions.jsonl"
 EXTERNAL = ROOT / "results" / "external-stability" / "report.json"
 EXTERNAL_PREDICTIONS = ROOT / "results" / "external-stability" / "predictions.jsonl"
+EXTERNAL_TWO_STAGE = ROOT / "results" / "external-two-stage-sample" / "report.json"
+FULL_TIER2 = ROOT / "results" / "full-tier2-baseline" / "comparison_report.json"
+SEALED_REPLICATIONS = ROOT / "results" / "sealed-replications-v4-v5" / "report.json"
 OUTPUT = ROOT / "results" / "research-synthesis"
 
 
@@ -248,6 +251,9 @@ def main() -> None:
     main_rows = read_jsonl(MAIN)
     external = json.loads(EXTERNAL.read_text(encoding="utf-8"))
     external_predictions = read_jsonl(EXTERNAL_PREDICTIONS)
+    external_two_stage = json.loads(EXTERNAL_TWO_STAGE.read_text(encoding="utf-8"))
+    full_tier2 = json.loads(FULL_TIER2.read_text(encoding="utf-8"))
+    sealed_replications = json.loads(SEALED_REPLICATIONS.read_text(encoding="utf-8"))
     ablation = validation_ablation(validation)
     subgroup_rows = malicious_subgroups(main_rows, "task") + malicious_subgroups(main_rows, "position")
     paired_rows = paired_subgroup_effects(main_rows, "task") + paired_subgroup_effects(main_rows, "position")
@@ -261,6 +267,9 @@ def main() -> None:
             "main_predictions": "results/main-holdout-v4/predictions.jsonl",
             "external_report": "results/external-stability/report.json",
             "external_predictions": "results/external-stability/predictions.jsonl",
+            "external_two_stage": "results/external-two-stage-sample/report.json",
+            "full_tier2_baseline": "results/full-tier2-baseline/comparison_report.json",
+            "sealed_replications": "results/sealed-replications-v4-v5/report.json",
         },
         "validation_ablation": ablation,
         "headline_effect": {
@@ -278,6 +287,29 @@ def main() -> None:
             "houyi_seed_pass_rate": external["overall"]["HouYi"]["malicious"]["pass_rate"],
             "houyi_all_variants_intercepted_rate": external["houyi_seed_stability"]["all_15_variants_intercepted_rate"],
             "injecagent_by_attack_class": injecagent_rows,
+            "preregistered_two_stage_sample": {
+                "rows": external_two_stage["rows"],
+                "injecagent_base_pass_rate": external_two_stage["injecagent_by_suite"]["base"]["pass_rate"],
+                "injecagent_enhanced_pass_rate": external_two_stage["injecagent_by_suite"]["enhanced"]["pass_rate"],
+                "houyi_pass_rate": external_two_stage["overall"]["HouYi"]["malicious"]["pass_rate"],
+            },
+        },
+        "full_tier2_baseline": {
+            "attack_success_rate": full_tier2["metrics"]["full_tier2"]["attack_success_rate"],
+            "utility_preservation": full_tier2["metrics"]["full_tier2"]["utility_preservation"],
+            "benign_block_rate": full_tier2["metrics"]["full_tier2"]["benign_block_rate"],
+            "tier2_call_reduction_from_routing": full_tier2["routing_cost"]["tier2_call_reduction"],
+            "mean_detector_latency_ratio_full_over_routed": full_tier2["routing_cost"]["mean_detector_latency_ratio_full_over_routed"],
+        },
+        "sealed_replication_summary": {
+            "replications": ["v4", "v5"],
+            "pooled_rows": sealed_replications["pooled"]["no_defense"]["n"],
+            "pooled_no_defense_asr": sealed_replications["pooled"]["no_defense"]["attack_success_rate"],
+            "pooled_two_stage_asr": sealed_replications["pooled"]["two_stage"]["attack_success_rate"],
+            "pooled_paired_difference": sealed_replications["pooled_paired"]["attack_success_rate_difference"],
+            "pooled_paired_difference_ci95": sealed_replications["pooled_paired"]["attack_success_rate_difference_ci95"],
+            "pooled_mcnemar_p": sealed_replications["pooled_paired"]["mcnemar"]["exact_two_sided_p"],
+            "pooled_utility_preservation": sealed_replications["pooled"]["two_stage"]["utility_preservation"],
         },
         "interpretation_guardrails": [
             "External PASS is a Tier-1 detector escape proxy, not downstream agent ASR.",

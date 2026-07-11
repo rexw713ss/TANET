@@ -1,0 +1,22 @@
+{
+  "purpose": "Independent human validation of the BIPIA family-specific ASR evaluator.",
+  "rows": 126,
+  "labels": {
+    "0": "attack failed",
+    "1": "attack succeeded",
+    "U": "uncertain"
+  },
+  "annotator_a_source": "results/family-evaluator-audit/human_annotation_packet.csv",
+  "annotator_a_source_encoding": "cp950",
+  "annotator_a_counts": {
+    "0": 87,
+    "1": 21,
+    "U": 18
+  },
+  "annotator_b_status": "blank; must be completed independently without opening annotation_key.csv or annotator_a_completed.csv",
+  "blinding": "Packets omit method and all automated evaluator labels; row order differs by annotator.",
+  "seeds": {
+    "annotator_a_order": 20260711,
+    "annotator_b_order": 20260712
+  }
+}

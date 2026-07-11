@@ -1,0 +1,7 @@
+﻿replication,method,n,attack_success_rate,benign_task_utility,utility_preservation,benign_block_rate,malicious_block_rate,tier2_trigger_rate
+v4,no_defense,100,0.24,0.62815564,1.0,0.0,0.0,0.0
+v4,two_stage,100,0.02,0.60829292,0.9683793016647912,0.04,0.92,0.26
+v5,no_defense,100,0.22,0.65761258,1.0,0.0,0.0,0.0
+v5,two_stage,100,0.0,0.6559754,0.9975104186723435,0.02,0.86,0.24
+pooled,no_defense,200,0.23,0.64288411,1.0,0.0,0.0,0.0
+pooled,two_stage,200,0.01,0.63213416,0.9832785570015099,0.03,0.89,0.25

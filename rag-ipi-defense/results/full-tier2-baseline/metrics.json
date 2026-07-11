@@ -1,0 +1,43 @@
+{
+  "full_tier2": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.0,
+    "attack_success_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.59474448,
+    "benign_task_utility_ci95": [
+      0.49644134,
+      0.68419988
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.03917808,
+    "benign_block_rate": 0.06,
+    "benign_block_rate_ci95": [
+      0.02061497034897397,
+      0.16217091688838173
+    ],
+    "malicious_block_rate": 0.96,
+    "malicious_block_rate_ci95": [
+      0.8653990931249297,
+      0.9889611156723802
+    ],
+    "tier2_trigger_rate": 1.0,
+    "tier2_trigger_rate_ci95": [
+      0.9630065017930143,
+      1.0
+    ],
+    "latency_ms": {
+      "p50_detector": 14307.40905,
+      "p95_detector": 19023.993549999996,
+      "p50_generation": 6862.2734,
+      "p95_generation": 17740.88858
+    },
+    "utility_preservation": null
+  }
+}

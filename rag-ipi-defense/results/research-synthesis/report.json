@@ -4,7 +4,10 @@
     "validation_features": "results/calibration/validation_features.jsonl",
     "main_predictions": "results/main-holdout-v4/predictions.jsonl",
     "external_report": "results/external-stability/report.json",
-    "external_predictions": "results/external-stability/predictions.jsonl"
+    "external_predictions": "results/external-stability/predictions.jsonl",
+    "external_two_stage": "results/external-two-stage-sample/report.json",
+    "full_tier2_baseline": "results/full-tier2-baseline/comparison_report.json",
+    "sealed_replications": "results/sealed-replications-v4-v5/report.json"
   },
   "validation_ablation": [
     {
@@ -134,7 +137,36 @@
         "review_rate": 0.0,
         "block_rate": 1.0
       }
-    ]
+    ],
+    "preregistered_two_stage_sample": {
+      "rows": 110,
+      "injecagent_base_pass_rate": 1.0,
+      "injecagent_enhanced_pass_rate": 0.0,
+      "houyi_pass_rate": 0.72
+    }
+  },
+  "full_tier2_baseline": {
+    "attack_success_rate": 0.0,
+    "utility_preservation": 0.9468106980620281,
+    "benign_block_rate": 0.06,
+    "tier2_call_reduction_from_routing": 0.74,
+    "mean_detector_latency_ratio_full_over_routed": 3.846143301384638
+  },
+  "sealed_replication_summary": {
+    "replications": [
+      "v4",
+      "v5"
+    ],
+    "pooled_rows": 200,
+    "pooled_no_defense_asr": 0.23,
+    "pooled_two_stage_asr": 0.01,
+    "pooled_paired_difference": -0.22,
+    "pooled_paired_difference_ci95": [
+      -0.29,
+      -0.15
+    ],
+    "pooled_mcnemar_p": 4.76837158203125e-07,
+    "pooled_utility_preservation": 0.9832785570015099
   },
   "interpretation_guardrails": [
     "External PASS is a Tier-1 detector escape proxy, not downstream agent ASR.",

@@ -1,0 +1,84 @@
+{
+  "no_defense": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.22,
+    "attack_success_rate_ci95": [
+      0.1275391597021442,
+      0.3524154958125367
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.65761258,
+    "benign_task_utility_ci95": [
+      0.59044062,
+      0.71938114
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.6739187,
+    "benign_block_rate": 0.0,
+    "benign_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "malicious_block_rate": 0.0,
+    "malicious_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "tier2_trigger_rate": 0.0,
+    "tier2_trigger_rate_ci95": [
+      0.0,
+      0.03699349820698568
+    ],
+    "latency_ms": {
+      "p50_detector": 0.0,
+      "p95_detector": 0.0,
+      "p50_generation": 7036.0301500000005,
+      "p95_generation": 17349.333065
+    },
+    "utility_preservation": 1.0
+  },
+  "two_stage": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.0,
+    "attack_success_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.6559754,
+    "benign_task_utility_ci95": [
+      0.5784536,
+      0.7255052399999999
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.10404064,
+    "benign_block_rate": 0.02,
+    "benign_block_rate_ci95": [
+      0.003539259271646236,
+      0.10495443589637815
+    ],
+    "malicious_block_rate": 0.86,
+    "malicious_block_rate_ci95": [
+      0.7381380628941446,
+      0.9304916657298371
+    ],
+    "tier2_trigger_rate": 0.24,
+    "tier2_trigger_rate_ci95": [
+      0.16691325556948772,
+      0.33232336349814473
+    ],
+    "latency_ms": {
+      "p50_detector": 457.6177,
+      "p95_detector": 17105.86584,
+      "p50_generation": 5809.492200000001,
+      "p95_generation": 15180.11695
+    },
+    "utility_preservation": 0.9975104186723435
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "status": "awaiting_annotator_b",
+  "expected_rows": 126,
+  "completed_pairs": 0,
+  "incomplete_pairs": 126,
+  "three_class": {
+    "n": 0,
+    "raw_agreement": null,
+    "cohen_kappa": null,
+    "gwet_ac1": null,
+    "left_counts": {},
+    "right_counts": {}
+  },
+  "binary_resolved_subset": {
+    "n": 0,
+    "raw_agreement": null,
+    "cohen_kappa": null,
+    "gwet_ac1": null,
+    "left_counts": {},
+    "right_counts": {},
+    "excluded_uncertain_pairs": 0
+  },
+  "human_consensus": {
+    "resolved_n": 0,
+    "unresolved_n": 126,
+    "positive_rate": null,
+    "vs_primary_evaluator": {
+      "n": 0,
+      "raw_agreement": null,
+      "cohen_kappa": null,
+      "gwet_ac1": null,
+      "left_counts": {},
+      "right_counts": {}
+    },
+    "vs_independent_evaluator": {
+      "n": 0,
+      "raw_agreement": null,
+      "cohen_kappa": null,
+      "gwet_ac1": null,
+      "left_counts": {},
+      "right_counts": {}
+    },
+    "asr_by_method": {}
+  }
+}

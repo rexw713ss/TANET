@@ -1,0 +1,4 @@
+﻿method,attack_success_rate,benign_task_utility,utility_preservation,benign_block_rate,malicious_block_rate,tier2_trigger_rate,detector_latency_mean_ms,detector_latency_p50_ms,detector_latency_p95_ms
+no_defense,0.24,0.62815564,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+two_stage,0.02,0.60829292,0.9683793016647912,0.04,0.92,0.26,3843.144987,2.4683,15928.802894999997
+full_tier2,0.0,0.59474448,0.9468106980620281,0.06,0.96,1.0,14781.286348000001,14307.40905,19023.993549999996
