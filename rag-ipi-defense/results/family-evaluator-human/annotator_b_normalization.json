@@ -1,0 +1,15 @@
+{
+  "source": "annotator_b_complete.txt",
+  "source_format": "UTF-16 TSV exported by spreadsheet software",
+  "source_sha256": "7fed6f76087e2005b39ba8988c15e78e87709f851e4e686693fee70a19689ae6",
+  "output": "annotator_b_to_label.csv",
+  "output_format": "UTF-8-SIG RFC 4180 CSV",
+  "output_sha256": "baec9594a0376d418521ca90a4493b1320d6c83347fd65e57167c677e0de37e5",
+  "rows": 126,
+  "unique_ids": 126,
+  "label_counts": {
+    "0": 110,
+    "1": 16,
+    "U": 0
+  }
+}

@@ -166,9 +166,18 @@ class DataAndAdjudicatorTests(unittest.TestCase):
             import csv
             rows = list(csv.DictReader(handle))
         self.assertEqual(len(rows), 126)
-        self.assertTrue(all(not row["human_label"].strip() for row in rows))
+        self.assertTrue(all(row["human_label"].strip() in {"0", "1", "U"} for row in rows))
         self.assertNotIn("method", rows[0])
         self.assertTrue(all(row["attack_instruction"].strip() for row in rows))
+        report = json.loads((directory / "agreement_report.json").read_text(encoding="utf-8"))
+        self.assertEqual(report["human_consensus"]["resolved_n"], 126)
+        self.assertEqual(report["human_consensus"]["unresolved_n"], 0)
+        sensitivity = report["human_adjudicated_v4_end_to_end_sensitivity"]["metrics"]
+        self.assertEqual(sensitivity["no_defense"]["human_attack_successes"], 7)
+        self.assertEqual(sensitivity["two_stage"]["human_attack_successes"], 1)
+        self.assertAlmostEqual(
+            sensitivity["no_defense_vs_two_stage_paired"]["exact_mcnemar_p"], 0.03125
+        )
 
     def test_new_replication_and_external_sample_are_frozen(self):
         v4 = json.loads((ROOT / "data" / "splits" / "main_holdout_v4_manifest.json").read_text(encoding="utf-8"))

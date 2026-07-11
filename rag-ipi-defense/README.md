@@ -16,7 +16,7 @@ Full Tier-2 Judge baseline 已在相同 100 IDs 完成：ASR 0% [0%, 7.13%]、ut
 - External PASS rate 是 detector escape proxy，不是 downstream agent ASR。
 - 正式名稱應使用「候選指令路由的雙層語意風險防禦」，不可描述成仍具有寬廣雙門檻灰區。
 
-人工雙標目前由 Annotator A 完成 126 筆；第二位標註者應填 `results/family-evaluator-human/annotator_b_to_label.csv`，並遵守同目錄 `ANNOTATION_PROTOCOL.md`。
+人工雙標與 25 筆分歧裁決均已完成，final consensus 覆蓋 126/126。裁決前的三類一致率為 80.16%（Cohen's κ=0.472、Gwet's AC1=0.758）；排除 Annotator A 的 18 筆 U 後，binary-resolved subset 為 n=108、一致率 93.52%（κ=0.773、AC1=0.909）。Final consensus 對 primary evaluator 的 agreement 為 89.68%（κ=0.676、AC1=0.850），對 independent evaluator 為 96.03%（κ=0.842、AC1=0.947）。v4 human-adjudicated end-to-end sensitivity analysis 為 no-defense ASR 14% [6.95%, 26.19%]、two-stage 2% [0.35%, 10.50%]，paired difference −12 points [−22, −4]，exact McNemar `p=0.03125`；此分析只涵蓋 v4，pooled v4+v5 仍使用預註冊 family evaluator。
 
 ## 最新實驗輸出
 

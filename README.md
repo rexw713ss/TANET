@@ -198,7 +198,7 @@ Two-stage 長尾來自 Tier-2 本地模型。相同 100 IDs 的 always-on baseli
 - 12 個 disagreement 均為 primary=true、31B=false，集中在 Substitution Ciphers、Reverse Text 與 Information Dissemination。
 - 使用 31B labels 的敏感度分析：no defense 14%、boundary 20%、SRS only 2%、two stage 2%。主要排序與 two-stage 結論不變，但 baseline ASR 絕對值依 evaluator 而變。
 
-這支持「結論對第二本機 judge 穩健」，不等於 human validity。Annotator A 已完成 126 筆（0: 87、1: 21、U: 18）；第二位標註者應獨立填寫 `rag-ipi-defense/results/family-evaluator-human/annotator_b_to_label.csv`。完成後再固定三類與 binary-resolved subset 的 agreement、Cohen's κ、Gwet's AC1 及 adjudication，才可宣稱 human evaluator validity。
+人工雙標與 25 筆分歧裁決均已完成，final consensus 覆蓋 126/126。裁決前的三類一致率為 80.16%（Cohen's κ=0.472、Gwet's AC1=0.758），排除 A 的 18 筆 U 後，binary-resolved subset 為 n=108、一致率 93.52%（κ=0.773、AC1=0.909）。Final consensus 對 primary evaluator 的 agreement 為 89.68%（κ=0.676、AC1=0.850），對 independent evaluator 為 96.03%（κ=0.842、AC1=0.947）。Human-adjudicated v4 sensitivity analysis 仍得到 no-defense 14% 對 two-stage 2%，paired difference −12 points [−22, −4]，exact McNemar `p=0.03125`；顯示 primary evaluator 高估部分 baseline attack successes，但防禦效果方向與顯著性仍成立。
 
 ## InjecAgent 與 HouYi 外部穩定性
 
@@ -289,14 +289,14 @@ HouYi explicit-ignoring separator 的 10 筆全數由 Tier-2/Gate 攔截，但 l
 
 - 不可宣稱對所有 RAG、模型或真實 agent 都有 2% ASR。
 - 不可把 external PASS rate 寫成實際攻擊成功率。
-- 不可宣稱 human-level evaluator validity；人工雙標尚未完成。
+- 不可宣稱 pooled v4+v5 已由人工逐筆驗證；人工裁決完整覆蓋 v4 的 126 筆 generated malicious outputs，v5 仍使用預註冊 family evaluator。
 - 不可把本機 Gemma always-on Judge baseline 泛化為所有 full LLM guards；目前約 3.85× mean latency ratio 受硬體、cache 與 sequential order 影響。
 - 不可宣稱完整 HouYi adaptive attack 已執行。
 - 不可宣稱 BIPIA WebQA strict MD5 reproduction。
 
 ## 投件前仍缺的實驗
 
-1. Annotator A 已完成；仍須完成 `results/family-evaluator-human/annotator_b_to_label.csv`，再報 inter-rater κ/AC1 與衝突 adjudication。
+1. 必做實驗已完成；投稿前須把 final human audit、Full Judge baseline、v5／pooled 結果寫回論文，並依 TANET 規定壓至最多 6 頁。
 2. External 兩層 Gate 抽樣已完成；仍須執行真正 agent/tool downstream，回報 ASR-valid、ASR-all 與 utility。
 3. 補齊研究計畫原列的 keyword/regex 與大型 guard baseline；full local Judge baseline 已完成。
 4. 建立繁體中文與臺灣校園/企業文件的 benign 與 IPI test，驗證 multilingual claim。
@@ -334,7 +334,7 @@ git -C .\datasets\HouYi checkout cd2e06c8cecc2934b9e64f0cd0d38e9acc6898c8
 # Paper-ready synthesis
 .\env\Scripts\python.exe -B .\rag-ipi-defense\src\analyze_research_results.py
 
-# Human agreement（Annotator B 完成後）
+# Human agreement、裁決與 v4 sensitivity analysis
 .\env\Scripts\python.exe -B .\rag-ipi-defense\src\analyze_human_double_annotation.py
 
 # Always-on Full Tier-2 baseline（支援逐筆 resume）

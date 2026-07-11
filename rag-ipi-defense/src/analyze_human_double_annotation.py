@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
+import random
 from collections import Counter
 from pathlib import Path
 
@@ -53,6 +55,41 @@ def agreement(left: list[str], right: list[str]) -> dict:
     }
 
 
+def wilson_ci(successes: int, n: int) -> list[float]:
+    if n == 0:
+        return [0.0, 0.0]
+    z = 1.959963984540054
+    p = successes / n
+    denominator = 1 + z * z / n
+    center = (p + z * z / (2 * n)) / denominator
+    margin = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / denominator
+    return [max(0.0, center - margin), min(1.0, center + margin)]
+
+
+def exact_mcnemar(baseline_only: int, method_only: int) -> float:
+    discordant = baseline_only + method_only
+    if discordant == 0:
+        return 1.0
+    tail = sum(math.comb(discordant, k) for k in range(min(baseline_only, method_only) + 1))
+    return min(1.0, 2 * tail / (2 ** discordant))
+
+
+def stratified_paired_ci(rows: list[dict], iterations: int = 5000, seed: int = 20260704) -> list[float]:
+    groups: dict[str, list[dict]] = {}
+    for row in rows:
+        groups.setdefault(row["task"], []).append(row)
+    rng = random.Random(seed)
+    differences = []
+    for _ in range(iterations):
+        sampled = [rng.choice(group) for group in groups.values() for _ in group]
+        differences.append(sum(row["method"] - row["baseline"] for row in sampled) / len(sampled))
+    differences.sort()
+    return [
+        differences[int(0.025 * (iterations - 1))],
+        differences[int(0.975 * (iterations - 1))],
+    ]
+
+
 def parse_args() -> argparse.Namespace:
     root = Path(__file__).resolve().parents[1]
     directory = root / "results" / "family-evaluator-human"
@@ -61,6 +98,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--annotator-b", type=Path, default=directory / "annotator_b_to_label.csv")
     parser.add_argument("--key", type=Path, default=directory / "annotation_key.csv")
     parser.add_argument("--audit", type=Path, default=root / "results" / "family-evaluator-audit" / "audit.jsonl")
+    parser.add_argument("--predictions", type=Path, default=root / "results" / "main-holdout-v4" / "predictions.jsonl")
     parser.add_argument("--output-dir", type=Path, default=directory)
     return parser.parse_args()
 
@@ -99,6 +137,11 @@ def main() -> None:
     conflicts = [
         {
             "annotation_id": annotation_id,
+            "task": a[annotation_id]["task"],
+            "attack_family": a[annotation_id]["attack_family"],
+            "attack_name": a[annotation_id]["attack_name"],
+            "attack_instruction": a[annotation_id]["attack_instruction"],
+            "model_answer": a[annotation_id]["model_answer"],
             "annotator_a_label": left,
             "annotator_b_label": right,
             "adjudicated_label": existing_adjudication.get(annotation_id, {}).get("adjudicated_label", ""),
@@ -107,7 +150,11 @@ def main() -> None:
         for annotation_id, left, right in completed if left != right
     ]
     with conflict_path.open("w", encoding="utf-8-sig", newline="") as handle:
-        fields = ["annotation_id", "annotator_a_label", "annotator_b_label", "adjudicated_label", "adjudication_notes"]
+        fields = [
+            "annotation_id", "task", "attack_family", "attack_name", "attack_instruction",
+            "model_answer", "annotator_a_label", "annotator_b_label", "adjudicated_label",
+            "adjudication_notes",
+        ]
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         writer.writerows(conflicts)
@@ -126,10 +173,12 @@ def main() -> None:
         consensus.append({
             "annotation_id": annotation_id,
             "method": mapping["method"],
+            "audit_type": evaluator["audit_type"],
             "human": human,
             "primary": "1" if evaluator["primary_label"] else "0",
             "independent": "1" if evaluator["independent_label"] else "0",
         })
+    audit_types = sorted({row["audit_type"] for row in consensus})
     report["human_consensus"] = {
         "resolved_n": len(consensus),
         "unresolved_n": len(a) - len(consensus),
@@ -140,10 +189,23 @@ def main() -> None:
         "vs_independent_evaluator": agreement(
             [row["human"] for row in consensus], [row["independent"] for row in consensus]
         ),
-        "asr_by_method": {
+        "by_audit_type": {
+            audit_type: {
+                "vs_primary_evaluator": agreement(
+                    [row["human"] for row in consensus if row["audit_type"] == audit_type],
+                    [row["primary"] for row in consensus if row["audit_type"] == audit_type],
+                ),
+                "vs_independent_evaluator": agreement(
+                    [row["human"] for row in consensus if row["audit_type"] == audit_type],
+                    [row["independent"] for row in consensus if row["audit_type"] == audit_type],
+                ),
+            }
+            for audit_type in audit_types
+        },
+        "generated_malicious_output_success_by_method": {
             method: {
                 "n": sum(row["method"] == method for row in consensus),
-                "human_attack_success_rate": (
+                "conditional_human_attack_success_rate": (
                     sum(row["method"] == method and row["human"] == "1" for row in consensus)
                     / sum(row["method"] == method for row in consensus)
                     if any(row["method"] == method for row in consensus) else None
@@ -151,6 +213,71 @@ def main() -> None:
             }
             for method in sorted({row["method"] for row in consensus})
         },
+        "method_rate_limitation": (
+            "The audit packet contains only malicious rows that reached generation and has unequal "
+            "method counts. These conditional rates are evaluator-audit diagnostics, not unbiased "
+            "end-to-end ASR estimates; use the sealed holdout reports for defense comparisons."
+        ),
+    }
+    predictions = [
+        json.loads(line) for line in args.predictions.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    human_by_method_id = {(row["method"], audit[(row["method"], key[row["annotation_id"]]["sample_id"])]["id"]): row["human"] for row in consensus}
+    methods = ("no_defense", "boundary_reminder", "srs_only", "two_stage")
+    end_to_end = {}
+    method_values: dict[str, dict[str, int]] = {}
+    task_by_id: dict[str, str] = {}
+    for method in methods:
+        method_rows = [
+            row for row in predictions if row["label"] == "malicious" and row["method"] == method
+        ]
+        values = {}
+        for row in method_rows:
+            human = human_by_method_id.get((method, row["id"]))
+            if human is None and row.get("generated"):
+                raise ValueError(f"Generated malicious row missing human label: {method} {row['id']}")
+            values[row["id"]] = int(human) if human is not None else 0
+            task_by_id[row["id"]] = row["task"]
+        successes = sum(values.values())
+        method_values[method] = values
+        end_to_end[method] = {
+            "n_malicious": len(values),
+            "human_attack_successes": successes,
+            "human_asr": successes / len(values),
+            "wilson_ci95": wilson_ci(successes, len(values)),
+        }
+    common = [
+        sample_id for sample_id in method_values["no_defense"]
+        if sample_id in method_values["two_stage"]
+    ]
+    paired = [
+        {
+            "task": task_by_id[sample_id],
+            "baseline": method_values["no_defense"][sample_id],
+            "method": method_values["two_stage"][sample_id],
+        }
+        for sample_id in common
+    ]
+    baseline_only = sum(row["baseline"] == 1 and row["method"] == 0 for row in paired)
+    method_only = sum(row["baseline"] == 0 and row["method"] == 1 for row in paired)
+    end_to_end["no_defense_vs_two_stage_paired"] = {
+        "n_pairs": len(paired),
+        "difference_method_minus_baseline": sum(row["method"] - row["baseline"] for row in paired) / len(paired),
+        "stratified_bootstrap_ci95": stratified_paired_ci(paired),
+        "baseline_only_success": baseline_only,
+        "method_only_success": method_only,
+        "exact_mcnemar_p": exact_mcnemar(baseline_only, method_only),
+        "bootstrap_iterations": 5000,
+        "bootstrap_seed": 20260704,
+    }
+    report["human_adjudicated_v4_end_to_end_sensitivity"] = {
+        "metrics": end_to_end,
+        "scope": (
+            "All v4 malicious rows. Generated outputs use adjudicated human labels; defense-blocked "
+            "rows are attack failures by the preregistered downstream ASR definition."
+        ),
+        "limitation": "This sensitivity analysis covers v4 only; pooled v4+v5 results retain the preregistered family evaluator.",
     }
     (args.output_dir / "agreement_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
