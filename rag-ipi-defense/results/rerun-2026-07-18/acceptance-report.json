@@ -1,0 +1,308 @@
+{
+  "status": "accepted",
+  "protocol": "identical sample + effective generator prompt reuses one Gemma 4 answer and evaluator result",
+  "sources": {
+    "v4": {
+      "path": "D:\\TANET\\rag-ipi-defense\\results\\rerun-2026-07-18\\v4-core-r2\\predictions.jsonl",
+      "sha256": "cfcb981333cbb774c42bc84c6b6c180359f125884a6dc279ed8d350a08f3b1c2"
+    },
+    "v5": {
+      "path": "D:\\TANET\\rag-ipi-defense\\results\\rerun-2026-07-18\\v5-core-r2\\predictions.jsonl",
+      "sha256": "10480d54830ffbefc752afdaa8accb71577fbed5aeedbf5dfe16f994b8423026"
+    },
+    "pooled": {
+      "path": "D:\\TANET\\rag-ipi-defense\\results\\rerun-2026-07-18\\pooled-r2\\report.json",
+      "sha256": "0683fbb676dedf8c0878baf674102d26d867b8fa7024be7d678543adced3df1a"
+    }
+  },
+  "row_counts": {
+    "v4": {
+      "no_defense": 100,
+      "srs_only": 100,
+      "two_stage": 100,
+      "full_tier2": 100
+    },
+    "v5": {
+      "no_defense": 100,
+      "two_stage": 100
+    }
+  },
+  "generation_errors": 0,
+  "missing_asr_labels": 0,
+  "reuse_checks": {
+    "v4": {
+      "srs_only": {
+        "generated_rows": 72,
+        "byte_identical_answers": 72,
+        "reuse_provenance_rows": 72,
+        "malicious_generated_rows": 22,
+        "identical_attack_labels": 22
+      },
+      "two_stage": {
+        "generated_rows": 51,
+        "byte_identical_answers": 51,
+        "reuse_provenance_rows": 51,
+        "malicious_generated_rows": 4,
+        "identical_attack_labels": 4
+      },
+      "full_tier2": {
+        "generated_rows": 47,
+        "byte_identical_answers": 47,
+        "reuse_provenance_rows": 47,
+        "malicious_generated_rows": 2,
+        "identical_attack_labels": 2
+      }
+    },
+    "v5": {
+      "two_stage": {
+        "generated_rows": 54,
+        "byte_identical_answers": 54,
+        "reuse_provenance_rows": 54,
+        "malicious_generated_rows": 6,
+        "identical_attack_labels": 6
+      }
+    }
+  },
+  "v4_metrics": {
+    "no_defense": {
+      "n": 100,
+      "benign_n": 50,
+      "malicious_n": 50,
+      "attack_success_rate": 0.3,
+      "attack_success_rate_ci95": [
+        0.19103553500880954,
+        0.437503504644534
+      ],
+      "attack_success_rate_ci95_method": "Wilson score",
+      "attack_evaluator_valid_n": 50,
+      "benign_task_utility": 0.6285406,
+      "benign_task_utility_ci95": [
+        0.54677832,
+        0.70608324
+      ],
+      "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+      "malicious_task_utility": 0.57313262,
+      "benign_block_rate": 0.0,
+      "benign_block_rate_ci95": [
+        0.0,
+        0.07134759913335872
+      ],
+      "malicious_block_rate": 0.0,
+      "malicious_block_rate_ci95": [
+        0.0,
+        0.07134759913335872
+      ],
+      "tier2_trigger_rate": 0.0,
+      "tier2_trigger_rate_ci95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "latency_ms": {
+        "p50_detector": 0.0,
+        "p95_detector": 0.0,
+        "p50_generation": 5337.326349999999,
+        "p95_generation": 14170.169095
+      }
+    },
+    "srs_only": {
+      "n": 100,
+      "benign_n": 50,
+      "malicious_n": 50,
+      "attack_success_rate": 0.06,
+      "attack_success_rate_ci95": [
+        0.02061497034897397,
+        0.16217091688838173
+      ],
+      "attack_success_rate_ci95_method": "Wilson score",
+      "attack_evaluator_valid_n": 50,
+      "benign_task_utility": 0.6285406,
+      "benign_task_utility_ci95": [
+        0.54677832,
+        0.70608324
+      ],
+      "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+      "malicious_task_utility": 0.28880026000000003,
+      "benign_block_rate": 0.0,
+      "benign_block_rate_ci95": [
+        0.0,
+        0.07134759913335872
+      ],
+      "malicious_block_rate": 0.56,
+      "malicious_block_rate_ci95": [
+        0.4230602802165686,
+        0.6883780078874284
+      ],
+      "tier2_trigger_rate": 0.0,
+      "tier2_trigger_rate_ci95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "latency_ms": {
+        "p50_detector": 1.1592500000000001,
+        "p95_detector": 3.0714650000000003,
+        "p50_generation": 5163.769200000001,
+        "p95_generation": 13403.321340000004
+      }
+    },
+    "two_stage": {
+      "n": 100,
+      "benign_n": 50,
+      "malicious_n": 50,
+      "attack_success_rate": 0.02,
+      "attack_success_rate_ci95": [
+        0.003539259271646236,
+        0.10495443589637815
+      ],
+      "attack_success_rate_ci95_method": "Wilson score",
+      "attack_evaluator_valid_n": 50,
+      "benign_task_utility": 0.59024692,
+      "benign_task_utility_ci95": [
+        0.49391644,
+        0.6788566199999999
+      ],
+      "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+      "malicious_task_utility": 0.06388396,
+      "benign_block_rate": 0.06,
+      "benign_block_rate_ci95": [
+        0.02061497034897397,
+        0.16217091688838173
+      ],
+      "malicious_block_rate": 0.92,
+      "malicious_block_rate_ci95": [
+        0.8116175308165717,
+        0.968450485911407
+      ],
+      "tier2_trigger_rate": 0.26,
+      "tier2_trigger_rate_ci95": [
+        0.18404698464748132,
+        0.3537098944918718
+      ],
+      "latency_ms": {
+        "p50_detector": 2.1948,
+        "p95_detector": 12246.787815,
+        "p50_generation": 5131.4892,
+        "p95_generation": 12661.43705
+      }
+    },
+    "full_tier2": {
+      "n": 100,
+      "benign_n": 50,
+      "malicious_n": 50,
+      "attack_success_rate": 0.0,
+      "attack_success_rate_ci95": [
+        0.0,
+        0.07134759913335872
+      ],
+      "attack_success_rate_ci95_method": "Wilson score",
+      "attack_evaluator_valid_n": 50,
+      "benign_task_utility": 0.5763444799999999,
+      "benign_task_utility_ci95": [
+        0.47431686,
+        0.67111592
+      ],
+      "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+      "malicious_task_utility": 0.03917808,
+      "benign_block_rate": 0.1,
+      "benign_block_rate_ci95": [
+        0.04347576493189041,
+        0.21360231437479654
+      ],
+      "malicious_block_rate": 0.96,
+      "malicious_block_rate_ci95": [
+        0.8653990931249297,
+        0.9889611156723802
+      ],
+      "tier2_trigger_rate": 1.0,
+      "tier2_trigger_rate_ci95": [
+        0.9630065017930143,
+        1.0
+      ],
+      "latency_ms": {
+        "p50_detector": 10796.401600000001,
+        "p95_detector": 13549.298659999995,
+        "p50_generation": 5131.4892,
+        "p95_generation": 12713.890229999999
+      }
+    }
+  },
+  "v4_paired_vs_no_defense": {
+    "full_tier2": {
+      "attack_success_rate_difference": -0.3,
+      "attack_success_rate_difference_ci95": [
+        -0.42,
+        -0.2
+      ],
+      "attack_success_paired_n": 50,
+      "mcnemar": {
+        "baseline_only_success": 15,
+        "method_only_success": 0,
+        "exact_two_sided_p": 6.103515625e-05
+      },
+      "benign_utility_difference": -0.05219612,
+      "benign_utility_difference_ci95": [
+        -0.10824007999999999,
+        -0.00582552
+      ],
+      "benign_utility_paired_n": 50
+    },
+    "srs_only": {
+      "attack_success_rate_difference": -0.24,
+      "attack_success_rate_difference_ci95": [
+        -0.36,
+        -0.14
+      ],
+      "attack_success_paired_n": 50,
+      "mcnemar": {
+        "baseline_only_success": 12,
+        "method_only_success": 0,
+        "exact_two_sided_p": 0.00048828125
+      },
+      "benign_utility_difference": 0.0,
+      "benign_utility_difference_ci95": [
+        0.0,
+        0.0
+      ],
+      "benign_utility_paired_n": 50
+    },
+    "two_stage": {
+      "attack_success_rate_difference": -0.28,
+      "attack_success_rate_difference_ci95": [
+        -0.4,
+        -0.18
+      ],
+      "attack_success_paired_n": 50,
+      "mcnemar": {
+        "baseline_only_success": 14,
+        "method_only_success": 0,
+        "exact_two_sided_p": 0.0001220703125
+      },
+      "benign_utility_difference": -0.038293680000000004,
+      "benign_utility_difference_ci95": [
+        -0.09235962,
+        0.0
+      ],
+      "benign_utility_paired_n": 50
+    }
+  },
+  "candidate_routed_vs_full_tier2": {
+    "tier2_call_reduction": 0.74,
+    "mean_detector_latency_ms": {
+      "candidate_routed": 2963.4015879999997,
+      "full_tier2": 11354.477879999999
+    },
+    "full_to_routed_mean_latency_ratio": 3.831569074532061,
+    "asr": {
+      "candidate_routed": 0.02,
+      "full_tier2": 0.0
+    },
+    "benign_block_rate": {
+      "candidate_routed": 0.06,
+      "full_tier2": 0.1
+    },
+    "benign_utility": {
+      "candidate_routed": 0.59024692,
+      "full_tier2": 0.5763444799999999
+    }
+  },
+  "human_annotation_scope": "The completed 126-row adjudication applies to legacy v4 outputs, not the fresh rerun outputs."
+}

@@ -1,0 +1,86 @@
+{
+  "no_defense": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.28,
+    "attack_success_rate_ci95": [
+      0.17474170665911232,
+      0.4166512369595657
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.65873254,
+    "benign_task_utility_ci95": [
+      0.5914765399999999,
+      0.7205564799999999
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.6842543000000001,
+    "benign_block_rate": 0.0,
+    "benign_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "malicious_block_rate": 0.0,
+    "malicious_block_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "tier2_trigger_rate": 0.0,
+    "tier2_trigger_rate_ci95": [
+      0.0,
+      0.03699349820698568
+    ],
+    "latency_ms": {
+      "p50_detector": 0.0,
+      "p95_detector": 0.0,
+      "p50_generation": 6337.5944500000005,
+      "p95_generation": 12837.731534999999
+    },
+    "relative_benign_utility": 1.0,
+    "utility_preservation": 1.0
+  },
+  "two_stage": {
+    "n": 100,
+    "benign_n": 50,
+    "malicious_n": 50,
+    "attack_success_rate": 0.0,
+    "attack_success_rate_ci95": [
+      0.0,
+      0.07134759913335872
+    ],
+    "attack_success_rate_ci95_method": "Wilson score",
+    "attack_evaluator_valid_n": 50,
+    "benign_task_utility": 0.62006722,
+    "benign_task_utility_ci95": [
+      0.53665102,
+      0.6962448599999999
+    ],
+    "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+    "malicious_task_utility": 0.08249686,
+    "benign_block_rate": 0.04,
+    "benign_block_rate_ci95": [
+      0.011038884327619805,
+      0.1346009068750702
+    ],
+    "malicious_block_rate": 0.88,
+    "malicious_block_rate_ci95": [
+      0.7619518261679701,
+      0.9438239984906773
+    ],
+    "tier2_trigger_rate": 0.24,
+    "tier2_trigger_rate_ci95": [
+      0.16691325556948772,
+      0.33232336349814473
+    ],
+    "latency_ms": {
+      "p50_detector": 3.4263500000000002,
+      "p95_detector": 11973.43472,
+      "p50_generation": 6402.24495,
+      "p95_generation": 12905.100344999999
+    },
+    "relative_benign_utility": 0.9413034613410778,
+    "utility_preservation": 0.9413034613410778
+  }
+}

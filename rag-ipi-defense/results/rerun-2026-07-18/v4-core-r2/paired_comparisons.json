@@ -1,0 +1,59 @@
+{
+  "full_tier2": {
+    "attack_success_rate_difference": -0.3,
+    "attack_success_rate_difference_ci95": [
+      -0.42,
+      -0.2
+    ],
+    "attack_success_paired_n": 50,
+    "mcnemar": {
+      "baseline_only_success": 15,
+      "method_only_success": 0,
+      "exact_two_sided_p": 6.103515625e-05
+    },
+    "benign_utility_difference": -0.05219612,
+    "benign_utility_difference_ci95": [
+      -0.10824007999999999,
+      -0.00582552
+    ],
+    "benign_utility_paired_n": 50
+  },
+  "srs_only": {
+    "attack_success_rate_difference": -0.24,
+    "attack_success_rate_difference_ci95": [
+      -0.36,
+      -0.14
+    ],
+    "attack_success_paired_n": 50,
+    "mcnemar": {
+      "baseline_only_success": 12,
+      "method_only_success": 0,
+      "exact_two_sided_p": 0.00048828125
+    },
+    "benign_utility_difference": 0.0,
+    "benign_utility_difference_ci95": [
+      0.0,
+      0.0
+    ],
+    "benign_utility_paired_n": 50
+  },
+  "two_stage": {
+    "attack_success_rate_difference": -0.28,
+    "attack_success_rate_difference_ci95": [
+      -0.4,
+      -0.18
+    ],
+    "attack_success_paired_n": 50,
+    "mcnemar": {
+      "baseline_only_success": 14,
+      "method_only_success": 0,
+      "exact_two_sided_p": 0.0001220703125
+    },
+    "benign_utility_difference": -0.038293680000000004,
+    "benign_utility_difference_ci95": [
+      -0.09235962,
+      0.0
+    ],
+    "benign_utility_paired_n": 50
+  }
+}

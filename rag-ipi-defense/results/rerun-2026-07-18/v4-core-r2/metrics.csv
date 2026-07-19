@@ -1,0 +1,3 @@
+﻿method,n,attack_success_rate,benign_task_utility,malicious_task_utility,utility_preservation,benign_block_rate,malicious_block_rate,tier2_trigger_rate
+no_defense,100,0.3,0.6285406,0.57313262,1.0,0.0,0.0,0.0
+full_tier2,100,0.0,0.5763444799999999,0.03917808,0.916956645282739,0.1,0.96,1.0

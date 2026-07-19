@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 from pathlib import Path
@@ -13,11 +14,20 @@ def read_jsonl(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
-def main() -> None:
+def parse_args() -> argparse.Namespace:
     root = Path(__file__).resolve().parents[1]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--v4", type=Path, default=root / "results" / "main-holdout-v4" / "predictions.jsonl")
+    parser.add_argument("--v5", type=Path, default=root / "results" / "main-holdout-v5" / "predictions.jsonl")
+    parser.add_argument("--output-dir", type=Path, default=root / "results" / "sealed-replications-v4-v5")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
     sources = {
-        "v4": root / "results" / "main-holdout-v4" / "predictions.jsonl",
-        "v5": root / "results" / "main-holdout-v5" / "predictions.jsonl",
+        "v4": args.v4,
+        "v5": args.v5,
     }
     per_replication = {}
     raw_by_replication = {}
@@ -56,7 +66,7 @@ def main() -> None:
         },
         "statistical_note": "Pooled bootstrap strata are replication x task; exact McNemar uses all 100 paired malicious IDs.",
     }
-    output = root / "results" / "sealed-replications-v4-v5"
+    output = args.output_dir
     output.mkdir(parents=True, exist_ok=True)
     (output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     with (output / "summary.csv").open("w", encoding="utf-8-sig", newline="") as handle:

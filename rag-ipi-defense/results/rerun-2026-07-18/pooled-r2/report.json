@@ -1,0 +1,316 @@
+{
+  "scope": "Two independently frozen, context-disjoint BIPIA holdouts; fixed Gate and model settings; no pooled recalibration.",
+  "replications": {
+    "v4": {
+      "no_defense": {
+        "n": 100,
+        "benign_n": 50,
+        "malicious_n": 50,
+        "attack_success_rate": 0.3,
+        "attack_success_rate_ci95": [
+          0.19103553500880954,
+          0.437503504644534
+        ],
+        "attack_success_rate_ci95_method": "Wilson score",
+        "attack_evaluator_valid_n": 50,
+        "benign_task_utility": 0.6285406,
+        "benign_task_utility_ci95": [
+          0.54677832,
+          0.70608324
+        ],
+        "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+        "malicious_task_utility": 0.57313262,
+        "benign_block_rate": 0.0,
+        "benign_block_rate_ci95": [
+          0.0,
+          0.07134759913335872
+        ],
+        "malicious_block_rate": 0.0,
+        "malicious_block_rate_ci95": [
+          0.0,
+          0.07134759913335872
+        ],
+        "tier2_trigger_rate": 0.0,
+        "tier2_trigger_rate_ci95": [
+          0.0,
+          0.03699349820698568
+        ],
+        "latency_ms": {
+          "p50_detector": 0.0,
+          "p95_detector": 0.0,
+          "p50_generation": 5337.326349999999,
+          "p95_generation": 14170.169095
+        }
+      },
+      "two_stage": {
+        "n": 100,
+        "benign_n": 50,
+        "malicious_n": 50,
+        "attack_success_rate": 0.02,
+        "attack_success_rate_ci95": [
+          0.003539259271646236,
+          0.10495443589637815
+        ],
+        "attack_success_rate_ci95_method": "Wilson score",
+        "attack_evaluator_valid_n": 50,
+        "benign_task_utility": 0.59024692,
+        "benign_task_utility_ci95": [
+          0.49391644,
+          0.6788566199999999
+        ],
+        "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+        "malicious_task_utility": 0.06388396,
+        "benign_block_rate": 0.06,
+        "benign_block_rate_ci95": [
+          0.02061497034897397,
+          0.16217091688838173
+        ],
+        "malicious_block_rate": 0.92,
+        "malicious_block_rate_ci95": [
+          0.8116175308165717,
+          0.968450485911407
+        ],
+        "tier2_trigger_rate": 0.26,
+        "tier2_trigger_rate_ci95": [
+          0.18404698464748132,
+          0.3537098944918718
+        ],
+        "latency_ms": {
+          "p50_detector": 2.1948,
+          "p95_detector": 12246.787815,
+          "p50_generation": 5131.4892,
+          "p95_generation": 12661.43705
+        }
+      },
+      "paired": {
+        "attack_success_rate_difference": -0.28,
+        "attack_success_rate_difference_ci95": [
+          -0.4,
+          -0.18
+        ],
+        "attack_success_paired_n": 50,
+        "mcnemar": {
+          "baseline_only_success": 14,
+          "method_only_success": 0,
+          "exact_two_sided_p": 0.0001220703125
+        },
+        "benign_utility_difference": -0.038293680000000004,
+        "benign_utility_difference_ci95": [
+          -0.09235962,
+          0.0
+        ],
+        "benign_utility_paired_n": 50
+      }
+    },
+    "v5": {
+      "no_defense": {
+        "n": 100,
+        "benign_n": 50,
+        "malicious_n": 50,
+        "attack_success_rate": 0.28,
+        "attack_success_rate_ci95": [
+          0.17474170665911232,
+          0.4166512369595657
+        ],
+        "attack_success_rate_ci95_method": "Wilson score",
+        "attack_evaluator_valid_n": 50,
+        "benign_task_utility": 0.65873254,
+        "benign_task_utility_ci95": [
+          0.5914765399999999,
+          0.7205564799999999
+        ],
+        "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+        "malicious_task_utility": 0.6842543000000001,
+        "benign_block_rate": 0.0,
+        "benign_block_rate_ci95": [
+          0.0,
+          0.07134759913335872
+        ],
+        "malicious_block_rate": 0.0,
+        "malicious_block_rate_ci95": [
+          0.0,
+          0.07134759913335872
+        ],
+        "tier2_trigger_rate": 0.0,
+        "tier2_trigger_rate_ci95": [
+          0.0,
+          0.03699349820698568
+        ],
+        "latency_ms": {
+          "p50_detector": 0.0,
+          "p95_detector": 0.0,
+          "p50_generation": 6337.5944500000005,
+          "p95_generation": 12837.731534999999
+        }
+      },
+      "two_stage": {
+        "n": 100,
+        "benign_n": 50,
+        "malicious_n": 50,
+        "attack_success_rate": 0.0,
+        "attack_success_rate_ci95": [
+          0.0,
+          0.07134759913335872
+        ],
+        "attack_success_rate_ci95_method": "Wilson score",
+        "attack_evaluator_valid_n": 50,
+        "benign_task_utility": 0.62006722,
+        "benign_task_utility_ci95": [
+          0.53665102,
+          0.6962448599999999
+        ],
+        "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+        "malicious_task_utility": 0.08249686,
+        "benign_block_rate": 0.04,
+        "benign_block_rate_ci95": [
+          0.011038884327619805,
+          0.1346009068750702
+        ],
+        "malicious_block_rate": 0.88,
+        "malicious_block_rate_ci95": [
+          0.7619518261679701,
+          0.9438239984906773
+        ],
+        "tier2_trigger_rate": 0.24,
+        "tier2_trigger_rate_ci95": [
+          0.16691325556948772,
+          0.33232336349814473
+        ],
+        "latency_ms": {
+          "p50_detector": 3.4263500000000002,
+          "p95_detector": 11973.43472,
+          "p50_generation": 6402.24495,
+          "p95_generation": 12905.100344999999
+        }
+      },
+      "paired": {
+        "attack_success_rate_difference": -0.28,
+        "attack_success_rate_difference_ci95": [
+          -0.4,
+          -0.18
+        ],
+        "attack_success_paired_n": 50,
+        "mcnemar": {
+          "baseline_only_success": 14,
+          "method_only_success": 0,
+          "exact_two_sided_p": 0.0001220703125
+        },
+        "benign_utility_difference": -0.038665319999999996,
+        "benign_utility_difference_ci95": [
+          -0.09646108,
+          0.0
+        ],
+        "benign_utility_paired_n": 50
+      }
+    }
+  },
+  "pooled": {
+    "no_defense": {
+      "n": 200,
+      "benign_n": 100,
+      "malicious_n": 100,
+      "attack_success_rate": 0.29,
+      "attack_success_rate_ci95": [
+        0.2101483574912227,
+        0.3853889117557111
+      ],
+      "attack_success_rate_ci95_method": "Wilson score",
+      "attack_evaluator_valid_n": 100,
+      "benign_task_utility": 0.6436365700000001,
+      "benign_task_utility_ci95": [
+        0.59108407,
+        0.6940250900000001
+      ],
+      "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+      "malicious_task_utility": 0.62869346,
+      "benign_block_rate": 0.0,
+      "benign_block_rate_ci95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "malicious_block_rate": 0.0,
+      "malicious_block_rate_ci95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "tier2_trigger_rate": 0.0,
+      "tier2_trigger_rate_ci95": [
+        0.0,
+        0.018845326377266575
+      ],
+      "latency_ms": {
+        "p50_detector": 0.0,
+        "p95_detector": 0.0,
+        "p50_generation": 5775.82435,
+        "p95_generation": 13186.41687499999
+      },
+      "utility_preservation": 1.0
+    },
+    "two_stage": {
+      "n": 200,
+      "benign_n": 100,
+      "malicious_n": 100,
+      "attack_success_rate": 0.01,
+      "attack_success_rate_ci95": [
+        0.0017674320641406505,
+        0.054486196178705315
+      ],
+      "attack_success_rate_ci95_method": "Wilson score",
+      "attack_evaluator_valid_n": 100,
+      "benign_task_utility": 0.60515707,
+      "benign_task_utility_ci95": [
+        0.54218386,
+        0.66442137
+      ],
+      "benign_task_utility_ci95_method": "task-stratified percentile bootstrap",
+      "malicious_task_utility": 0.07319041,
+      "benign_block_rate": 0.05,
+      "benign_block_rate_ci95": [
+        0.02154367915436796,
+        0.11175046923191913
+      ],
+      "malicious_block_rate": 0.9,
+      "malicious_block_rate_ci95": [
+        0.8256343384950865,
+        0.9447708629393249
+      ],
+      "tier2_trigger_rate": 0.25,
+      "tier2_trigger_rate_ci95": [
+        0.19508168006817497,
+        0.31434098312045833
+      ],
+      "latency_ms": {
+        "p50_detector": 2.4844999999999997,
+        "p95_detector": 12238.817314999997,
+        "p50_generation": 5392.1739,
+        "p95_generation": 12819.71672
+      },
+      "utility_preservation": 0.9402154852698937
+    }
+  },
+  "pooled_paired": {
+    "attack_success_rate_difference": -0.28,
+    "attack_success_rate_difference_ci95": [
+      -0.36,
+      -0.2
+    ],
+    "attack_success_paired_n": 100,
+    "mcnemar": {
+      "baseline_only_success": 28,
+      "method_only_success": 0,
+      "exact_two_sided_p": 7.450580596923828e-09
+    },
+    "benign_utility_difference": -0.0384795,
+    "benign_utility_difference_ci95": [
+      -0.07526351,
+      -0.00956522
+    ],
+    "benign_utility_paired_n": 100
+  },
+  "consistency": {
+    "v4_asr_difference": -0.28,
+    "v5_asr_difference": -0.28,
+    "same_direction": true
+  },
+  "statistical_note": "Pooled bootstrap strata are replication x task; exact McNemar uses all 100 paired malicious IDs."
+}

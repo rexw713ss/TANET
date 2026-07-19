@@ -33,12 +33,12 @@
 
 二元率使用 Wilson 95% CI；utility 使用固定任務比例的 task-stratified bootstrap；方法差異使用 paired task-stratified bootstrap，ASR 同時報 exact McNemar test。
 
-| 方法 | ASR（Wilson 95% CI） | benign utility（95% CI） | utility preservation | benign block | malicious block | Tier-2 trigger |
+| 方法 | ASR（Wilson 95% CI） | benign utility（95% CI） | paired Δ utility vs. no defense（95% CI） | benign block | malicious block | Tier-2 trigger |
 |---|---:|---:|---:|---:|---:|---:|
-| No defense | 24.0% [14.30, 37.41] | 0.6282 [0.5465, 0.7061] | 100.0% | 0% | 0% | 0% |
-| Boundary reminder | 30.0% [19.10, 43.75] | 0.6239 [0.5336, 0.7088] | 99.32% | 0% | 0% | 0% |
-| SRS only | 6.0% [2.06, 16.22] | 0.6290 [0.5472, 0.7071] | 100.14% | 0% | 56% | 0% |
-| Two stage | 2.0% [0.35, 10.50] | 0.6083 [0.5190, 0.6932] | 96.84% | 4% | 92% | 26% |
+| No defense | 24.0% [14.30, 37.41] | 0.6282 [0.5465, 0.7061] | reference | 0% | 0% | 0% |
+| Boundary reminder | 30.0% [19.10, 43.75] | 0.6239 [0.5336, 0.7088] | −0.0043 [−0.0570, 0.0506] | 0% | 0% | 0% |
+| SRS only | 6.0% [2.06, 16.22] | 0.6290 [0.5472, 0.7071] | +0.0009 [−0.0013, 0.0036] | 0% | 56% | 0% |
+| Two stage | 2.0% [0.35, 10.50] | 0.6083 [0.5190, 0.6932] | −0.0199 [−0.0589, 0.0015] | 4% | 92% | 26% |
 
 相對 no defense 的配對結果：
 
@@ -77,4 +77,3 @@ Two-stage detector latency p50 2.47 ms、p95 15.93 s；長尾來自 Tier-2。完
 目前最有力的貢獻不是「又一個 prompt reminder」，而是可驗證的系統組合：語意 intent shift + 指令密度的 Tier-1、候選指令路由的 Tier-2、family-specific ASR，以及 validation-only 安全—成本選點。100 筆配對主實驗提供顯著 ASR 改善，同時把 utility 與 latency 代價量化，具有實務部署價值。
 
 仍會被審稿人追問的三點：WebQA upstream MD5 無法 strict reproduce、model-only family κ 僅中等、五任務各 10 個攻擊的樣本仍不算大。投件前優先補人工雙標與第二 seed／更大 test replication；不要再用本次 test 調 Gate。
-

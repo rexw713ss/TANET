@@ -2,9 +2,11 @@
 
 本專案已完成五任務 BIPIA 預註冊主實驗（含 WebQA）、Wilson／配對不確定性估計、family evaluator 獨立 audit、validation-only Gate 安全—成本曲線，以及 SRS 消融與任務／位置異質性分析。最新論文型總覽見工作區根目錄 [README](../README.md)，原始主實驗紀錄見 [2026-07-04 實驗狀態](docs/experiment-status-2026-07-04.md)。
 
-兩個 context-disjoint sealed replications 的 pooled 核心結果：no-defense ASR 23.0% [15.84%, 32.15%]，two-stage ASR 1.0% [0.18%, 5.45%]；配對差 −22 percentage points [−29, −15]，exact McNemar `p=4.77e-7`。Pooled utility preservation 為 98.33%，benign block 3%，Tier-2 trigger 25%。v4 與 v5 各自的 ASR 差均為 −22 points。
+2026-07-18 corrected paired rerun的兩個context-disjoint sealed replications之pooled核心結果：no-defense ASR 29.0% [21.01%, 38.54%]，two-stage ASR 1.0% [0.18%, 5.45%]；配對差−28 percentage points [−36, −20]，exact McNemar `p=7.45e-9`。Pooled paired benign-utility difference為−0.03848 [−0.07526, −0.00957]，benign block 5%，Tier-2 trigger 25%。v4與v5各自的ASR差均為−28 points。
 
-Full Tier-2 Judge baseline 已在相同 100 IDs 完成：ASR 0% [0%, 7.13%]、utility preservation 94.68%、benign block 6%、Tier-2 trigger 100%。候選路由相較 always-on baseline 減少 74% Tier-2 calls，mean detector latency 約低 3.85 倍，並將 benign block 由 6% 降至 4%。
+Corrected Full Tier-2 Judge baseline已在相同100 IDs與同源Gemma 4 outputs上完成：ASR 0% [0%, 7.13%]、benign block 10%、Tier-2 trigger 100%，相對no-defense的paired utility差−0.05220 [−0.10824, −0.00583]。候選路由相較always-on baseline減少74% Tier-2 calls，mean detector latency約低3.83倍，並將benign block由10%降至6%。
+
+模型實作使用 Ollama 0.31.2。本機主模型為 Gemma 4 8.0B Q4_K_M（`gemma4:latest`，manifest ID `c6eb396dbd59`，temperature 0、seed 42），負責下游生成、Tier-2、Full Tier-2 baseline 與 model-evaluated families；獨立 audit 使用 Gemma 4 31.3B Q4_K_M（`gemma4:31b`，manifest ID `6316f0629137`，seed 1729）。底層 blob SHA-256 見 `results/model-provenance-2026-07-18.json`。
 
 新增 external stability（固定既有 BIPIA Gate、不重新調參）：InjecAgent base PASS 98.39%、enhanced BLOCK 100%；HouYi offline seed PASS 67.22% [64.59%, 69.74%]，且 85 個情境群組中沒有任何一組能攔下全部 15 種變體。這些是 Tier-1 escape proxy，顯示現行方法對明顯 override wrapper 敏感，但對無 `ignore previous` 的 tool-action instructions 泛化不足。完整設計、MD5 相容模式與重現命令見工作區根目錄 [README](../README.md)。
 

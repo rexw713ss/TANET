@@ -1,0 +1,21 @@
+{
+  "two_stage": {
+    "attack_success_rate_difference": -0.28,
+    "attack_success_rate_difference_ci95": [
+      -0.4,
+      -0.18
+    ],
+    "attack_success_paired_n": 50,
+    "mcnemar": {
+      "baseline_only_success": 14,
+      "method_only_success": 0,
+      "exact_two_sided_p": 0.0001220703125
+    },
+    "benign_utility_difference": -0.038665319999999996,
+    "benign_utility_difference_ci95": [
+      -0.09646108,
+      0.0
+    ],
+    "benign_utility_paired_n": 50
+  }
+}

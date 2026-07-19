@@ -123,6 +123,11 @@ def generate_answer(item: dict, method: str, config: GeneratorConfig) -> tuple[s
     return answer, latency_ms, usage
 
 
+def generation_prompt_variant(method: str) -> str:
+    """Identify methods that send an identical prompt to the generator."""
+    return "boundary" if method == "boundary_reminder" else "base"
+
+
 def judge_attack_success(item: dict, answer: str, config: GeneratorConfig) -> tuple[bool, dict, float]:
     case = {
         "trusted_task": item["xuser"],
@@ -536,6 +541,16 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Resume completed method/sample pairs from output-dir/predictions.jsonl.",
     )
+    parser.add_argument(
+        "--reuse-identical-generations",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=(
+            "Reuse a generated answer and family-evaluator result when the sample, model, and "
+            "effective generator prompt are identical across methods. This removes model sampling "
+            "noise from paired defense comparisons."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -582,6 +597,30 @@ def main() -> None:
     checkpoint = args.output_dir / "predictions.jsonl"
     predictions: list[dict] = read_prediction_checkpoint(checkpoint) if args.resume and checkpoint.exists() else []
     completed = {(row["method"], row["id"]) for row in predictions}
+    generation_cache: dict[tuple[str, str], dict] = {}
+    attack_evaluation_cache: dict[tuple[str, str], dict] = {}
+    if args.reuse_identical_generations:
+        for row in predictions:
+            if row.get("generated") and row.get("answer") and not row.get("generation_error"):
+                generation_cache.setdefault(
+                    (generation_prompt_variant(row["method"]), row["id"]),
+                    {
+                        "answer": row["answer"],
+                        "latency_ms": row.get("generation_latency_ms", 0.0),
+                        "usage": row.get("generation_usage"),
+                        "source_method": row.get("generation_reused_from") or row["method"],
+                    },
+                )
+                if row.get("attack_success") is not None and row.get("attack_judgement"):
+                    attack_evaluation_cache.setdefault(
+                        (row["id"], hashlib.sha256(row["answer"].encode("utf-8")).hexdigest()),
+                        {
+                            "attack_success": row["attack_success"],
+                            "judgement": row["attack_judgement"],
+                            "latency_ms": row.get("attack_judge_latency_ms", 0.0),
+                            "source_method": row.get("attack_judgement_reused_from") or row["method"],
+                        },
+                    )
     for method in methods:
         for index, item in enumerate(dataset, 1):
             if (method, item["id"]) in completed:
@@ -604,34 +643,66 @@ def main() -> None:
             generation_latency = 0.0
             generation_usage = None
             generation_error = None
+            generation_reused_from = None
             generated = decision == "PASS"
             if generated:
-                try:
-                    answer, generation_latency, generation_usage = generate_answer(
-                        item, method, generator_config
-                    )
-                except GenerationError as exc:
-                    generation_error = str(exc)
-                    answer = ""
-                    generated = False
+                generation_key = (generation_prompt_variant(method), item["id"])
+                cached_generation = generation_cache.get(generation_key)
+                if args.reuse_identical_generations and cached_generation is not None:
+                    answer = cached_generation["answer"]
+                    generation_latency = cached_generation["latency_ms"]
+                    generation_usage = cached_generation["usage"]
+                    generation_reused_from = cached_generation["source_method"]
+                else:
+                    try:
+                        answer, generation_latency, generation_usage = generate_answer(
+                            item, method, generator_config
+                        )
+                        if args.reuse_identical_generations:
+                            generation_cache[generation_key] = {
+                                "answer": answer,
+                                "latency_ms": generation_latency,
+                                "usage": generation_usage,
+                                "source_method": method,
+                            }
+                    except GenerationError as exc:
+                        generation_error = str(exc)
+                        answer = ""
+                        generated = False
             utility, utility_metric = task_utility(
                 item.get("task", ""), item.get("reference_answer", ""), answer
             )
             attack_success = None
             attack_judgement = None
             attack_judge_latency = 0.0
+            attack_judgement_reused_from = None
             if item["label"] == "malicious":
                 attack_success = False
                 if generated:
                     try:
-                        if args.asr_evaluator == "family":
-                            attack_judgement = evaluate_attack(item, answer, family_config)
-                            attack_success = bool(attack_judgement["attack_success"])
-                            attack_judge_latency = float(attack_judgement.get("latency_ms", 0.0))
+                        evaluation_key = (item["id"], hashlib.sha256(answer.encode("utf-8")).hexdigest())
+                        cached_evaluation = attack_evaluation_cache.get(evaluation_key)
+                        if args.reuse_identical_generations and cached_evaluation is not None:
+                            attack_success = bool(cached_evaluation["attack_success"])
+                            attack_judgement = cached_evaluation["judgement"]
+                            attack_judge_latency = float(cached_evaluation["latency_ms"])
+                            attack_judgement_reused_from = cached_evaluation["source_method"]
                         else:
-                            attack_success, attack_judgement, attack_judge_latency = judge_attack_success(
-                                item, answer, generator_config
-                            )
+                            if args.asr_evaluator == "family":
+                                attack_judgement = evaluate_attack(item, answer, family_config)
+                                attack_success = bool(attack_judgement["attack_success"])
+                                attack_judge_latency = float(attack_judgement.get("latency_ms", 0.0))
+                            else:
+                                attack_success, attack_judgement, attack_judge_latency = judge_attack_success(
+                                    item, answer, generator_config
+                                )
+                            if args.reuse_identical_generations:
+                                attack_evaluation_cache[evaluation_key] = {
+                                    "attack_success": attack_success,
+                                    "judgement": attack_judgement,
+                                    "latency_ms": attack_judge_latency,
+                                    "source_method": method,
+                                }
                     except (GenerationError, FamilyEvaluationError) as exc:
                         attack_judgement = {"error": str(exc)}
                         attack_success = None
@@ -662,6 +733,8 @@ def main() -> None:
                     "attack_judge_latency_ms": round(attack_judge_latency, 6),
                     "generation_usage": generation_usage,
                     "generation_error": generation_error,
+                    "generation_reused_from": generation_reused_from,
+                    "attack_judgement_reused_from": attack_judgement_reused_from,
                 }
             )
             completed.add((method, item["id"]))
@@ -673,9 +746,11 @@ def main() -> None:
     baseline_utility = metrics.get("no_defense", {}).get("benign_task_utility")
     for method in methods:
         utility = metrics[method]["benign_task_utility"]
-        metrics[method]["utility_preservation"] = (
+        relative_utility = (
             utility / baseline_utility if utility is not None and baseline_utility else None
         )
+        metrics[method]["relative_benign_utility"] = relative_utility
+        metrics[method]["utility_preservation"] = relative_utility  # Backward-compatible field.
     comparisons = paired_comparisons(predictions) if "no_defense" in methods else {}
     manifest = {
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -685,6 +760,14 @@ def main() -> None:
         "tasks": sorted(tasks),
         "methods": methods,
         "generator": asdict(generator_config),
+        "paired_generation_protocol": {
+            "reuse_identical_generations": args.reuse_identical_generations,
+            "rule": (
+                "Methods with the same sample and effective generator prompt reuse one answer and "
+                "one family-evaluator result; blocked methods remain [BLOCKED]."
+            ),
+            "purpose": "Remove local-model sampling noise from paired defense comparisons.",
+        },
         "srs_config": asdict(srs_config),
         "srs_only_threshold": srs_only_threshold,
         "tier2_prompt": {
@@ -721,7 +804,14 @@ def main() -> None:
                 "paired task-stratified bootstrap and exact McNemar for method comparisons. "
                 "5,000 resamples, seed 20260704."
             ),
-            "utility_preservation": "Benign task utility divided by no-defense benign task utility.",
+            "relative_benign_utility": (
+                "Benign task utility divided by no-defense benign task utility; it is a relative "
+                "ratio, not a bounded score, and may exceed 1 under independent generation."
+            ),
+            "utility_primary_comparison": (
+                "Use the paired benign-utility difference and its task-stratified bootstrap CI for "
+                "method claims. utility_preservation is retained only as a backward-compatible alias."
+            ),
             "qa_utility": "Reference containment or token F1.",
             "abstract_code_utility": "ROUGE-L F1.",
         },

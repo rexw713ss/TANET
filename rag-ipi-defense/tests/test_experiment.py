@@ -9,7 +9,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from main_pipeline import adjudication_risk_score, average_precision, compute_metrics, load_dataset
-from downstream_rag import exact_mcnemar_pvalue, paired_comparisons, task_utility, wilson_ci
+from downstream_rag import (
+    exact_mcnemar_pvalue,
+    generation_prompt_variant,
+    paired_comparisons,
+    task_utility,
+    wilson_ci,
+)
 from embedding_intent import chunk_external_text
 from family_asr import evaluate_attack
 from srs_score import SRSConfig, compute_srs
@@ -227,6 +233,23 @@ class DataAndAdjudicatorTests(unittest.TestCase):
         self.assertAlmostEqual(pooled["pooled_paired"]["attack_success_rate_difference"], -0.22)
         self.assertEqual(pooled["pooled_paired"]["mcnemar"]["method_only_success"], 0)
 
+    def test_corrected_paired_rerun_is_accepted(self):
+        directory = ROOT / "results" / "rerun-2026-07-18"
+        report = json.loads((directory / "acceptance-report.json").read_text(encoding="utf-8"))
+        self.assertEqual(report["status"], "accepted")
+        self.assertEqual(report["generation_errors"], 0)
+        self.assertEqual(report["missing_asr_labels"], 0)
+        self.assertEqual(report["row_counts"]["v4"]["full_tier2"], 100)
+        self.assertEqual(report["row_counts"]["v5"]["two_stage"], 100)
+        self.assertEqual(
+            report["reuse_checks"]["v4"]["srs_only"]["byte_identical_answers"], 72
+        )
+        pooled = json.loads((directory / "pooled-r2" / "report.json").read_text(encoding="utf-8"))
+        self.assertEqual(pooled["pooled"]["no_defense"]["attack_success_rate"], 0.29)
+        self.assertEqual(pooled["pooled"]["two_stage"]["attack_success_rate"], 0.01)
+        self.assertEqual(pooled["pooled_paired"]["attack_success_rate_difference"], -0.28)
+        self.assertLess(pooled["pooled_paired"]["benign_utility_difference_ci95"][1], 0)
+
     def test_evidence_must_be_verbatim(self):
         result = _validate_result(
             {"risk_label": "malicious", "risk_type": "task_hijacking", "evidence_span": "invented", "confidence": 0.8, "short_reason": "test"},
@@ -251,6 +274,13 @@ class DataAndAdjudicatorTests(unittest.TestCase):
 
 
 class DownstreamMetricTests(unittest.TestCase):
+    def test_identical_base_prompts_share_generation_variant(self):
+        self.assertEqual(generation_prompt_variant("no_defense"), "base")
+        self.assertEqual(generation_prompt_variant("srs_only"), "base")
+        self.assertEqual(generation_prompt_variant("two_stage"), "base")
+        self.assertEqual(generation_prompt_variant("full_tier2"), "base")
+        self.assertEqual(generation_prompt_variant("boundary_reminder"), "boundary")
+
     def test_wilson_interval_is_non_degenerate_at_zero(self):
         lower, upper = wilson_ci(0, 12)
         self.assertEqual(lower, 0.0)

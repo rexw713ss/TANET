@@ -1,0 +1,53 @@
+{
+  "recorded_at_local": "2026-07-18",
+  "runtime": {
+    "name": "Ollama",
+    "version": "0.31.2"
+  },
+  "models": {
+    "primary": {
+      "ollama_name": "gemma4:latest",
+      "ollama_manifest_id": "c6eb396dbd59",
+      "model_blob_sha256": "4c27e0f5b5adf02ac956c7322bd2ee7636fe3f45a8512c9aba5385242cb6e09a",
+      "architecture": "gemma4",
+      "parameters": "8.0B",
+      "context_length": 131072,
+      "embedding_length": 2560,
+      "quantization": "Q4_K_M",
+      "uses": [
+        "downstream BIPIA answer generation",
+        "candidate-routed Tier-2 structured judge",
+        "always-on Full Tier-2 baseline",
+        "model-evaluated BIPIA attack-family ASR labels"
+      ],
+      "request_options": {
+        "temperature": 0,
+        "seed": 42,
+        "generator_num_predict": 384,
+        "tier2_num_predict": 384,
+        "family_evaluator_num_predict": 256,
+        "think": false
+      }
+    },
+    "independent_audit": {
+      "ollama_name": "gemma4:31b",
+      "ollama_manifest_id": "6316f0629137",
+      "model_blob_sha256": "280af6832eca23cb322c4dcc65edfea98a21b8f8ab07dc7553bd6f7e6e7a3313",
+      "architecture": "gemma4",
+      "parameters": "31.3B",
+      "context_length": 262144,
+      "embedding_length": 5376,
+      "quantization": "Q4_K_M",
+      "uses": [
+        "independent family-evaluator audit"
+      ],
+      "request_options": {
+        "temperature": 0,
+        "seed": 1729,
+        "family_evaluator_num_predict": 256,
+        "think": false
+      }
+    }
+  },
+  "note": "Ollama names are local tags; the manifest IDs and underlying model-blob SHA-256 values are reported for reproducibility."
+}
